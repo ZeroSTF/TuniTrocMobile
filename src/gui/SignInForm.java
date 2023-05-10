@@ -17,7 +17,7 @@
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
  */
 
-package com.mycompany.gui;
+package gui;
 
 import com.codename1.components.FloatingHint;
 import com.codename1.ui.Button;
@@ -30,7 +30,7 @@ import com.codename1.ui.layouts.BorderLayout;
 import com.codename1.ui.layouts.BoxLayout;
 import com.codename1.ui.layouts.FlowLayout;
 import com.codename1.ui.util.Resources;
-import com.mycompany.services.ServiceUtilisateur;
+import services.ServiceUser;
 
 /**
  * Sign in UI
@@ -86,7 +86,7 @@ public class SignInForm extends BaseForm {
         
         signIn.addActionListener(e -> 
         {
-               ServiceUtilisateur.getInstance().signin(username, password, res);
+               ServiceUser.getInstance().signin(username, password, res);
 
            
         });

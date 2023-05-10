@@ -17,7 +17,7 @@
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
  */
 
-package com.mycompany.gui;
+package gui;
 
 import com.codename1.components.FloatingHint;
 import com.codename1.ui.Button;
@@ -33,7 +33,7 @@ import com.codename1.ui.layouts.BorderLayout;
 import com.codename1.ui.layouts.BoxLayout;
 import com.codename1.ui.layouts.FlowLayout;
 import com.codename1.ui.util.Resources;
-import com.mycompany.services.ServiceUtilisateur;
+import services.ServiceUser;
 import java.util.Vector;
 
 /**
@@ -102,7 +102,7 @@ public class SignUpForm extends BaseForm {
         next.requestFocus();
         next.addActionListener((e) -> {
             
-            ServiceUtilisateur.getInstance().signup(username, password, email, confirmPassword, roles, res);
+            ServiceUser.getInstance().signup(username, password, email, confirmPassword, roles, res);
             Dialog.show("Success","account is saved","OK",null);
             new SignInForm(res).show();
         });

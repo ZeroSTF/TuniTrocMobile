@@ -17,7 +17,7 @@
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
  */
 
-package com.mycompany.gui;
+package gui;
 
 import com.codename1.components.FloatingHint;
 import com.codename1.components.InfiniteProgress;
@@ -35,7 +35,7 @@ import com.codename1.ui.layouts.BorderLayout;
 import com.codename1.ui.layouts.BoxLayout;
 import com.codename1.ui.layouts.FlowLayout;
 import com.codename1.ui.util.Resources;
-import com.mycompany.services.ServiceUtilisateur;
+import services.ServiceUser;
 import com.sun.mail.smtp.SMTPTransport;
 import java.util.Date;
 import java.util.Properties;
@@ -43,6 +43,7 @@ import javax.mail.Message;
 import javax.mail.Session;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+
 
 /**
  * Account activation UI
@@ -130,12 +131,12 @@ public class ActivateForm extends BaseForm {
             
             MimeMessage msg = new MimeMessage(session);
             
-            msg.setFrom(new InternetAddress("Reintialisation mot de passe <monEmail@domaine.com>"));
+            msg.setFrom(new InternetAddress("Reintialisation mot de passe <TuniTrocPI@gmail.com>"));
             msg.setRecipients(Message.RecipientType.TO, email.getText().toString());
             msg.setSubject("Application nom  : Confirmation du ");
             msg.setSentDate(new Date(System.currentTimeMillis()));
             
-           String mp = ServiceUtilisateur.getInstance().getPasswordByEmail(email.getText().toString(), res);//mp taw narj3lo
+           String mp = ServiceUser.getInstance().getPasswordByEmail(email.getText().toString(), res);//mp taw narj3lo
            String txt = "Bienvenue sur TuniTroc : Tapez ce mot de passe : "+mp+" dans le champs requis et appuiez sur confirmer";
            
            

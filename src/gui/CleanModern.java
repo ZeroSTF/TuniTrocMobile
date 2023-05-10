@@ -17,7 +17,7 @@
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
  */
 
-package com.mycompany.gui;
+package gui;
 
 
 import com.codename1.ui.Display;
