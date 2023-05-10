@@ -16,10 +16,11 @@
  * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE 
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
  */
-
 package gui;
 
+import com.codename1.capture.Capture;
 import com.codename1.components.FloatingHint;
+import com.codename1.io.FileSystemStorage;
 import com.codename1.ui.Button;
 import com.codename1.ui.ComboBox;
 import com.codename1.ui.Container;
@@ -35,6 +36,7 @@ import com.codename1.ui.layouts.FlowLayout;
 import com.codename1.ui.util.Resources;
 import services.ServiceUser;
 import java.util.Vector;
+import javafx.stage.FileChooser;
 
 /**
  * Signup UI
@@ -52,60 +54,113 @@ public class SignUpForm extends BaseForm {
         Form previous = Display.getInstance().getCurrent();
         tb.setBackCommand("", e -> previous.showBack());
         setUIID("SignIn");
-                
-        TextField username = new TextField("", "Username", 20, TextField.ANY);
+
+        TextField nom = new TextField("", "Nom", 20, TextField.ANY);
+        TextField prenom = new TextField("", "Prenom", 20, TextField.ANY);
         TextField email = new TextField("", "E-Mail", 20, TextField.EMAILADDR);
+        TextField phoneNumber = new TextField("", "Numero de Telephone", 8, TextField.PHONENUMBER);
+        ComboBox<String> cities = new ComboBox<>("Ariana", "Beja", "Ben Arous", "Bizerte", "Gabes", "Gafsa", "Jendouba", "Kairouan", "Kasserine", "Kebili", "Kef", "Mahdia", "Manouba", "Medenine", "Monastir", "Nabeul", "Sfax", "Sidi Bouzid", "Siliana", "Sousse", "Tataouine", "Tozeur", "Tunis", "Zaghouan");
+        Button browse = new Button("Parcourir");
+        browse.addActionListener(e -> {
+            if (Capture.hasCamera()) {
+                Capture.capturePhoto(photo -> {
+                    if (photo != null) {
+                        String filePath = FileSystemStorage.getInstance().getAppHomePath() + photo;
+                        browse.setText(filePath.substring(Math.max(0, filePath.length() - 15)));
+                    }
+                });
+            } else {
+                Display.getInstance().openGallery(e2 -> {
+                    if (e2 != null && e2.getSource() != null) {
+                        String filePath = (String) e2.getSource();
+                        browse.setText(filePath.substring(Math.max(0, filePath.length() - 15)));
+                    }
+                }, Display.GALLERY_IMAGE);
+            }
+        });
+
         TextField password = new TextField("", "Password", 20, TextField.PASSWORD);
         TextField confirmPassword = new TextField("", "Confirm Password", 20, TextField.PASSWORD);
-        
-           //Role 
-        //Vector 3ibara ala array 7atit fiha roles ta3na ba3d nzidouhom lel comboBox
-        Vector<String> vectorRole;
-        vectorRole = new Vector();
-        
-        vectorRole.add("Client");
-        vectorRole.add("Responsable");
-        
-        ComboBox<String>roles = new ComboBox<>(vectorRole);
-        
-        
-        
-        
-        username.setSingleLineTextArea(false);
+
+        nom.setSingleLineTextArea(false);
+        prenom.setSingleLineTextArea(false);
         email.setSingleLineTextArea(false);
+        phoneNumber.setSingleLineTextArea(false);
         password.setSingleLineTextArea(false);
         confirmPassword.setSingleLineTextArea(false);
         Button next = new Button("SignUp");
         Button signIn = new Button("Sign In");
         signIn.addActionListener(e -> new SignInForm(res).show());
         signIn.setUIID("Link");
-        Label alreadHaveAnAccount = new Label("Already have an account?");
-        
+        Label alreadyHaveAnAccount = new Label("Vous avez déjà un compte ?");
+
         Container content = BoxLayout.encloseY(
                 new Label("Sign Up", "LogoLabel"),
-                new FloatingHint(username),
+                new FloatingHint(nom),
+                createLineSeparator(),
+                new FloatingHint(prenom),
                 createLineSeparator(),
                 new FloatingHint(email),
                 createLineSeparator(),
+                new FloatingHint(phoneNumber),
+                createLineSeparator(),
+                browse,
+                createLineSeparator(),
                 new FloatingHint(password),
                 createLineSeparator(),
-                new FloatingHint(confirmPassword),
-                createLineSeparator(),
-                roles//sinon y7otich role fi form ta3 signup
+                new FloatingHint(confirmPassword)
         );
         content.setScrollableY(true);
         add(BorderLayout.CENTER, content);
         add(BorderLayout.SOUTH, BoxLayout.encloseY(
                 next,
-                FlowLayout.encloseCenter(alreadHaveAnAccount, signIn)
+                FlowLayout.encloseCenter(alreadyHaveAnAccount, signIn)
         ));
         next.requestFocus();
         next.addActionListener((e) -> {
-            
-            ServiceUser.getInstance().signup(username, password, email, confirmPassword, roles, res);
-            Dialog.show("Success","account is saved","OK",null);
+            String filePath = browse.getText();
+            if (filePath.isEmpty()) {
+                Dialog.show("Error", "Please select an image", "OK", null);
+                return;
+            }
+
+            String nomValue = nom.getText();
+            String prenomValue = prenom.getText();
+            String emailValue = email.getText();
+            String phoneNumberValue = phoneNumber.getText();
+            String villeValue = cities.getSelectedItem();
+            String passwordValue = password.getText();
+            String confirmPasswordValue = confirmPassword.getText();
+
+            if (nomValue.isEmpty() || prenomValue.isEmpty() || emailValue.isEmpty() || phoneNumberValue.isEmpty()
+                    || villeValue.isEmpty() || passwordValue.isEmpty() || confirmPasswordValue.isEmpty()) {
+                Dialog.show("Error", "Please fill in all the fields", "OK", null);
+                return;
+            }
+
+            if (!passwordValue.equals(confirmPasswordValue)) {
+                Dialog.show("Error", "Passwords do not match", "OK", null);
+                return;
+            }
+
+            // Perform signup logic here
+            // You can access the form field values using the respective variables
+            // (nomValue, prenomValue, emailValue, phoneNumberValue, villeValue, filePath, passwordValue, confirmPasswordValue)
+            // Example code to display the field values
+            System.out.println("Nom: " + nomValue);
+            System.out.println("Prenom: " + prenomValue);
+            System.out.println("E-Mail: " + emailValue);
+            System.out.println("Numero de Telephone: " + phoneNumberValue);
+            System.out.println("Ville: " + villeValue);
+            System.out.println("Photo: " + filePath);
+            System.out.println("Password: " + passwordValue);
+            System.out.println("Confirm Password: " + confirmPasswordValue);
+            ServiceUser.getInstance().signup(nomValue, prenomValue, emailValue, phoneNumberValue, villeValue, filePath, passwordValue);
+
+            // Call your service or API to save the user's signup data
+            Dialog.show("Success", "Account is saved", "OK", null);
             new SignInForm(res).show();
         });
     }
-    
+
 }
