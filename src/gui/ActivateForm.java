@@ -44,7 +44,6 @@ import javax.mail.Session;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
-
 /**
  * Account activation UI
  *
@@ -131,13 +130,13 @@ public class ActivateForm extends BaseForm {
             
             MimeMessage msg = new MimeMessage(session);
             
-            msg.setFrom(new InternetAddress("Reintialisation mot de passe <TuniTrocPI@gmail.com>"));
+            msg.setFrom(new InternetAddress("Reintialisation mot de passe <monEmail@domaine.com>"));
             msg.setRecipients(Message.RecipientType.TO, email.getText().toString());
             msg.setSubject("Application nom  : Confirmation du ");
             msg.setSentDate(new Date(System.currentTimeMillis()));
             
            String mp = ServiceUser.getInstance().getPasswordByEmail(email.getText().toString(), res);//mp taw narj3lo
-           String txt = "Bienvenue sur TuniTroc : Tapez ce mot de passe : "+mp+" dans le champs requis et appuiez sur confirmer";
+           String txt = "Bienvenue sur AppNom : Tapez ce mot de passe : "+mp+" dans le champs requis et appuiez sur confirmer";
            
            
            msg.setText(txt);

@@ -41,7 +41,7 @@ import javafx.stage.FileChooser;
 /**
  * Signup UI
  *
- * @author Shai Almog
+ * @author ZeroSTF
  */
 public class SignUpForm extends BaseForm {
 
@@ -95,7 +95,7 @@ public class SignUpForm extends BaseForm {
         Label alreadyHaveAnAccount = new Label("Vous avez déjà un compte ?");
 
         Container content = BoxLayout.encloseY(
-                new Label("Sign Up", "LogoLabel"),
+                new Label("Inscription", "LogoLabel"),
                 new FloatingHint(nom),
                 createLineSeparator(),
                 new FloatingHint(prenom),
@@ -103,6 +103,8 @@ public class SignUpForm extends BaseForm {
                 new FloatingHint(email),
                 createLineSeparator(),
                 new FloatingHint(phoneNumber),
+                createLineSeparator(),
+                cities,
                 createLineSeparator(),
                 browse,
                 createLineSeparator(),

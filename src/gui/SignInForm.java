@@ -52,7 +52,7 @@ public class SignInForm extends BaseForm {
         
         add(BorderLayout.NORTH, new Label(res.getImage("Logo.png"), "LogoLabel"));
         
-        TextField username = new TextField("", "Username", 20, TextField.ANY);
+        TextField username = new TextField("", "Email", 20, TextField.ANY);
         TextField password = new TextField("", "Password", 20, TextField.PASSWORD);
         username.setSingleLineTextArea(false);
         password.setSingleLineTextArea(false);
@@ -97,7 +97,7 @@ public class SignInForm extends BaseForm {
         
         mp.addActionListener((e) -> {
            
-            new ActivateForm(res).show();
+            
             
             
         });

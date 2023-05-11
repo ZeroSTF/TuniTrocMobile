@@ -5,7 +5,8 @@
  */
 package entities;
 
-import java.time.LocalDateTime;
+import com.codename1.l10n.SimpleDateFormat;
+import java.util.Date;
 
 
 /**
@@ -24,13 +25,13 @@ public class User {
     private int valeurFidelite;
     private Boolean role;
     private String salt;
-    private LocalDateTime date;
+    private Date date;
     private String etat;
 
     public User() {
     }
 
-    public User(int id, String email, String pwd, String nom, String prenom, String photo, String numTel, String ville, int valeurFidelite, Boolean role, String salt, LocalDateTime date, String etat) {
+    public User(int id, String email, String pwd, String nom, String prenom, String photo, String numTel, String ville, int valeurFidelite, Boolean role, String salt, Date date, String etat) {
         this.id = id;
         this.email = email;
         this.pwd = pwd;
@@ -46,7 +47,7 @@ public class User {
         this.etat = etat;
     }
 
-    public User(String email, String pwd, String nom, String prenom, String photo, String numTel, String ville, int valeurFidelite, Boolean role, String salt, LocalDateTime date, String etat) {
+    public User(String email, String pwd, String nom, String prenom, String photo, String numTel, String ville, int valeurFidelite, Boolean role, String salt, Date date, String etat) {
         this.email = email;
         this.pwd = pwd;
         this.nom = nom;
@@ -149,11 +150,11 @@ public class User {
         this.salt = salt;
     }
 
-    public LocalDateTime getDate() {
+    public Date getDate() {
         return date;
     }
 
-    public void setDate(LocalDateTime date) {
+    public void setDate(Date date) {
         this.date = date;
     }
 
