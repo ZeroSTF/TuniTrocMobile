@@ -35,7 +35,7 @@ import services.ServiceUser;
 /**
  * Sign in UI
  *
- * @author Shai Almog
+ * @author ZeroSTF
  */
 public class SignInForm extends BaseForm {
 

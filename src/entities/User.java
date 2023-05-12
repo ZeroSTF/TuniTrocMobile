@@ -7,6 +7,7 @@ package entities;
 
 import com.codename1.l10n.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 
 /**
@@ -49,6 +50,22 @@ public class User {
     }
 
     public User(String email, String pwd, String nom, String prenom, String photo, String numTel, String ville, int valeurFidelite, Boolean role, String salt, Date date, String etat) {
+        this.email = email;
+        this.pwd = pwd;
+        this.nom = nom;
+        this.prenom = prenom;
+        this.photo = photo;
+        this.numTel = numTel;
+        this.ville = ville;
+        this.valeurFidelite = valeurFidelite;
+        this.role = role;
+        this.salt = salt;
+        this.date = date;
+        this.etat = etat;
+    }
+
+    public User(int id, String email, String pwd, String nom, String prenom, String numTel, String ville, int valeurFidelite, boolean role, String salt, Date date, String etat, String userIdentifier, String username, String password, boolean verified, String photo, List<String> roles) {
+        this.id = id;
         this.email = email;
         this.pwd = pwd;
         this.nom = nom;
