@@ -34,6 +34,7 @@ import com.codename1.ui.layouts.BorderLayout;
 import com.codename1.ui.layouts.BoxLayout;
 import com.codename1.ui.layouts.FlowLayout;
 import com.codename1.ui.util.Resources;
+import java.io.IOException;
 import services.ServiceUser;
 import java.util.Vector;
 import javafx.stage.FileChooser;
@@ -62,22 +63,13 @@ public class SignUpForm extends BaseForm {
         ComboBox<String> cities = new ComboBox<>("Ariana", "Beja", "Ben Arous", "Bizerte", "Gabes", "Gafsa", "Jendouba", "Kairouan", "Kasserine", "Kebili", "Kef", "Mahdia", "Manouba", "Medenine", "Monastir", "Nabeul", "Sfax", "Sidi Bouzid", "Siliana", "Sousse", "Tataouine", "Tozeur", "Tunis", "Zaghouan");
         Button browse = new Button("Parcourir");
         browse.addActionListener(e -> {
-            if (Capture.hasCamera()) {
-                Capture.capturePhoto(photo -> {
-                    if (photo != null) {
-                        String filePath = FileSystemStorage.getInstance().getAppHomePath() + photo;
-                        browse.setText(filePath.substring(Math.max(0, filePath.length() - 15)));
-                    }
-                });
-            } else {
-                Display.getInstance().openGallery(e2 -> {
-                    if (e2 != null && e2.getSource() != null) {
-                        String filePath = (String) e2.getSource();
-                        browse.setText(filePath.substring(Math.max(0, filePath.length() - 15)));
-                    }
-                }, Display.GALLERY_IMAGE);
-            }
-        });
+    Display.getInstance().openGallery(e2 -> {
+        if (e2 != null && e2.getSource() != null) {
+            String filePath = "C:\\Users\\Administrateur\\Documents\\NetBeansProjects\\tunitrocmobile\\uploads\\" + "back-logo.jpeg";
+            browse.setText(filePath);
+        }
+    }, Display.GALLERY_IMAGE);
+});
 
         TextField password = new TextField("", "Password", 20, TextField.PASSWORD);
         TextField confirmPassword = new TextField("", "Confirm Password", 20, TextField.PASSWORD);
@@ -157,11 +149,7 @@ public class SignUpForm extends BaseForm {
             System.out.println("Photo: " + filePath);
             System.out.println("Password: " + passwordValue);
             System.out.println("Confirm Password: " + confirmPasswordValue);
-            ServiceUser.getInstance().signup(nomValue, prenomValue, emailValue, phoneNumberValue, villeValue, filePath, passwordValue);
-
-            // Call your service or API to save the user's signup data
-            Dialog.show("Success", "Account is saved", "OK", null);
-            new SignInForm(res).show();
+            ServiceUser.getInstance().signup(nomValue, prenomValue, emailValue, phoneNumberValue, villeValue, filePath, passwordValue, res);
         });
     }
 

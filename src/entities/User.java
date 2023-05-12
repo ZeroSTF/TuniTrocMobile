@@ -27,6 +27,7 @@ public class User {
     private String salt;
     private Date date;
     private String etat;
+  //  public static  User UserConnected;
 
     public User() {
     }

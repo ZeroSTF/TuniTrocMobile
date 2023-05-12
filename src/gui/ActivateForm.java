@@ -37,8 +37,8 @@ import com.codename1.ui.layouts.FlowLayout;
 import com.codename1.ui.util.Resources;
 import services.ServiceUser;
 import com.sun.mail.smtp.SMTPTransport;
-import java.util.Date;
-import java.util.Properties;
+/*import java.util.Date;
+import java.util.Properties;*/
 import javax.mail.Message;
 import javax.mail.Session;
 import javax.mail.internet.InternetAddress;
@@ -118,7 +118,7 @@ public class ActivateForm extends BaseForm {
     //sendMail
     
     public void sendMail(Resources res) {
-        try {
+      /*  try {
             
             Properties props = new Properties();
                 props.put("mail.transport.protocol", "smtp"); //SMTP protocol
@@ -151,7 +151,7 @@ public class ActivateForm extends BaseForm {
           
         }catch(Exception e ) {
             e.printStackTrace();
-        }
+        }*/
     }
     
 }

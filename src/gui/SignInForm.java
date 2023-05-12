@@ -50,7 +50,7 @@ public class SignInForm extends BaseForm {
         getTitleArea().setUIID("Container");
         setUIID("SignIn");
         
-        add(BorderLayout.NORTH, new Label(res.getImage("Logo.png"), "LogoLabel"));
+        add(BorderLayout.NORTH, new Label(res.getImage("tunitroc.png"), "LogoLabel"));
         
         TextField username = new TextField("", "Email", 20, TextField.ANY);
         TextField password = new TextField("", "Password", 20, TextField.PASSWORD);
@@ -97,7 +97,7 @@ public class SignInForm extends BaseForm {
         
         mp.addActionListener((e) -> {
            
-            
+            new ActivateForm(res).show();
             
             
         });

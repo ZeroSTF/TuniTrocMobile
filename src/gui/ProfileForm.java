@@ -80,11 +80,11 @@ public class ProfileForm extends BaseForm {
                 )
         ));
 
-        TextField username = new TextField("sandeep");
+        TextField username = new TextField(SessionManager.getUserName());
         username.setUIID("TextFieldBlack");
         addStringValue("Username", username);
 
-        TextField email = new TextField("sandeep@gmail.com", "E-Mail", 20, TextField.EMAILADDR);
+        TextField email = new TextField(SessionManager.getEmail(), "E-Mail", 20, TextField.EMAILADDR);
         email.setUIID("TextFieldBlack");
         addStringValue("E-Mail", email);
         

@@ -23,6 +23,9 @@ public class SessionManager {
     private static String email; 
     private static String passowrd ;
     private static String photo;
+    private static boolean isAdmin;
+    
+
 
     public static Preferences getPref() {
         return pref;
@@ -40,6 +43,16 @@ public class SessionManager {
         pref.set("id",id);//nsajl id user connecté  w na3tiha identifiant "id";
     }
 
+    
+        public static boolean getIsAdmin() {
+        return pref.get("isAdmin",isAdmin);// kif nheb njib id user connecté apres njibha men pref 
+    }
+
+    public static void setisAdmin(boolean isAdmin) {
+        pref.set("isAdmin",isAdmin);//nsajl id user connecté  w na3tiha identifiant "id";
+    }
+
+    
     public static String getUserName() {
         return pref.get("username",userName);
     }
