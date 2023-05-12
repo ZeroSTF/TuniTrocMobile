@@ -80,10 +80,11 @@ public class SignUpForm extends BaseForm {
         phoneNumber.setSingleLineTextArea(false);
         password.setSingleLineTextArea(false);
         confirmPassword.setSingleLineTextArea(false);
-        Button next = new Button("SignUp");
-        Button signIn = new Button("Sign In");
+        Button next = new Button("S'inscrire");
+        Button signIn = new Button("Se connecter");
         signIn.addActionListener(e -> new SignInForm(res).show());
         signIn.setUIID("Link");
+        signIn.getAllStyles().setFgColor(0x3366CC);
         Label alreadyHaveAnAccount = new Label("Vous avez déjà un compte ?");
 
         Container content = BoxLayout.encloseY(

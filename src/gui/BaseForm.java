@@ -84,8 +84,13 @@ public class BaseForm extends Form {
         
         tb.addMaterialCommandToSideMenu("Newsfeed", FontImage.MATERIAL_UPDATE, e -> new NewsfeedForm(res).show());
         tb.addMaterialCommandToSideMenu("Profile", FontImage.MATERIAL_SETTINGS, e -> new ProfileForm(res).show());
+        if(SessionManager.isIsAdmin()){
         tb.addMaterialCommandToSideMenu("Utilisateurs", FontImage.MATERIAL_MY_LIBRARY_BOOKS, e -> new ListUserForm(res).show());
         tb.addMaterialCommandToSideMenu("Publications", FontImage.MATERIAL_MY_LIBRARY_BOOKS, e -> new ListPostForm(res).show());
-        tb.addMaterialCommandToSideMenu("Logout", FontImage.MATERIAL_EXIT_TO_APP, e -> new WalkthruForm(res).show());
+        tb.addMaterialCommandToSideMenu("Produits", FontImage.MATERIAL_MY_LIBRARY_BOOKS, e -> new ListProductForm(res).show());
+        tb.addMaterialCommandToSideMenu("Transporteur", FontImage.MATERIAL_MY_LIBRARY_BOOKS, e -> new ListTransporteurForm(res).show());
+        tb.addMaterialCommandToSideMenu("Reclamations", FontImage.MATERIAL_MY_LIBRARY_BOOKS, e -> new ListReclamationFormF(res).show());
+        }
+        tb.addMaterialCommandToSideMenu("Logout", FontImage.MATERIAL_EXIT_TO_APP, e -> new SignInForm(res).show());
     }
 }

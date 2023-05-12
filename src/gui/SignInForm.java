@@ -56,15 +56,15 @@ public class SignInForm extends BaseForm {
         TextField password = new TextField("", "Password", 20, TextField.PASSWORD);
         username.setSingleLineTextArea(false);
         password.setSingleLineTextArea(false);
-        Button signIn = new Button("Sign In");
-        Button signUp = new Button("Sign Up");
+        Button signIn = new Button("Se connecter");
+        Button signUp = new Button("Inscription");
         
         //mp oublié
-        Button  mp = new Button("oublier mot de passe?","CenterLabel");
         
         
         signUp.addActionListener(e -> new SignUpForm(res).show());
         signUp.setUIID("Link");
+        signUp.getAllStyles().setFgColor(0x3366CC); // Set the desired color here
         Label doneHaveAnAccount = new Label("Vous n'avez aucune compte?");
         
         
@@ -78,7 +78,7 @@ public class SignInForm extends BaseForm {
                 new FloatingHint(password),
                 createLineSeparator(),
                 signIn,
-                FlowLayout.encloseCenter(doneHaveAnAccount, signUp),mp
+                FlowLayout.encloseCenter(doneHaveAnAccount, signUp)
         );
         content.setScrollableY(true);
         add(BorderLayout.SOUTH, content);
@@ -87,20 +87,11 @@ public class SignInForm extends BaseForm {
         signIn.addActionListener(e -> 
         {
                ServiceUser.getInstance().signin(username, password, res);
-
-           
         });
         
         
         
-        //Mp oublie event
         
-        mp.addActionListener((e) -> {
-           
-            new ActivateForm(res).show();
-            
-            
-        });
         
     }
     

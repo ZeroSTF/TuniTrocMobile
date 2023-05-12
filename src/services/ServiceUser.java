@@ -105,7 +105,7 @@ public class ServiceUser {
             if (json.equals("failed")) {
                 Dialog.show("Echec d'authentification", "Email ou mot de passe éronné", "OK", null);
             } else {
-                  System.out.println("data =="+json);
+                System.out.println("data ==" + json);
 
                 Map<String, Object> user = null;
                 try {
@@ -120,13 +120,14 @@ public class ServiceUser {
                 SessionManager.setPassowrd(user.get("pwd").toString());
                 SessionManager.setUserName(user.get("prenom").toString() + " " + user.get("nom").toString());
                 SessionManager.setEmail(user.get("email").toString());
-                SessionManager.setisAdmin(Boolean.parseBoolean(user.get("role").toString()));
-                System.out.println(SessionManager.getIsAdmin());
-
-                //photo 
-                if (user.get("photo") != null) {
-                    SessionManager.setPhoto(user.get("photo").toString());
-                }
+                SessionManager.setIsAdmin(Boolean.parseBoolean(user.get("role").toString()));
+                System.out.println(SessionManager.isIsAdmin());
+                SessionManager.setVille(user.get("ville").toString());
+                SessionManager.setNumTel(user.get("numTel").toString());
+                
+                float valeurFidelite = Float.parseFloat(user.get("valeurFidelite").toString());
+                SessionManager.setId((int) valeurFidelite);
+                
 
                 new NewsfeedForm(rs).show();
 
@@ -221,70 +222,69 @@ public class ServiceUser {
             }
         });
         NetworkManager.getInstance().addToQueueAndWait(req);
-        System.out.println("\nles resulats sont::::::::"+result);
+        System.out.println("\nles resulats sont::::::::" + result);
         return result;
     }
 
-    
     public ArrayList<User> parseUsers(String jsonText) throws ParseException, java.text.ParseException, IOException {
-    ArrayList<User> userList = new ArrayList<>();
-    if (jsonText != null && !jsonText.isEmpty()) {
-        JSONParser j = new JSONParser();
-        Map<String, Object> userJson = j.parseJSON(new StringReader(jsonText));
-         List<Map<String, Object>> list = (List<Map<String, Object>>) userJson.get("root");
-        for(Map<String, Object> obj : list){
-        float id1 = Float.parseFloat(obj.get("id").toString());
-        int id = (int)id1;
-        String email = obj.get("email").toString();
-        String pwd = obj.get("pwd").toString();
-        String nom = obj.get("nom").toString();
-        String prenom = obj.get("prenom").toString();
-        String numTel = obj.get("numTel").toString();
-        String ville = obj.get("ville").toString();
-        float vf = Float.parseFloat(obj.get("valeurFidelite").toString());
-        int valeurFidelite = (int) vf;
-        boolean role = Boolean.parseBoolean(obj.get("role").toString());
-        String salt = obj.get("salt").toString();
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-        Date date = formatter.parse(obj.get("date").toString());
-        String etat = obj.get("etat").toString();
-        String userIdentifier = obj.get("userIdentifier").toString();
-        String username = obj.get("username").toString();
-        String password = obj.get("password").toString();
-        boolean verified = Boolean.parseBoolean(obj.get("verified").toString());
-        //String photo = obj.get("photo").toString();
-        List<String> roles = (List<String>) obj.get("roles");
+        ArrayList<User> userList = new ArrayList<>();
+        if (jsonText != null && !jsonText.isEmpty()) {
+            JSONParser j = new JSONParser();
+            Map<String, Object> userJson = j.parseJSON(new StringReader(jsonText));
+            List<Map<String, Object>> list = (List<Map<String, Object>>) userJson.get("root");
+            for (Map<String, Object> obj : list) {
+                float id1 = Float.parseFloat(obj.get("id").toString());
+                int id = (int) id1;
+                String email = obj.get("email").toString();
+                String pwd = obj.get("pwd").toString();
+                String nom = obj.get("nom").toString();
+                String prenom = obj.get("prenom").toString();
+                String numTel = obj.get("numTel").toString();
+                String ville = obj.get("ville").toString();
+                float vf = Float.parseFloat(obj.get("valeurFidelite").toString());
+                int valeurFidelite = (int) vf;
+                boolean role = Boolean.parseBoolean(obj.get("role").toString());
+                String salt = obj.get("salt").toString();
+                SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+                Date date = formatter.parse(obj.get("date").toString());
+                String etat = obj.get("etat").toString();
+                String userIdentifier = obj.get("userIdentifier").toString();
+                String username = obj.get("username").toString();
+                String password = obj.get("password").toString();
+                boolean verified = Boolean.parseBoolean(obj.get("verified").toString());
+                //String photo = obj.get("photo").toString();
+                List<String> roles = (List<String>) obj.get("roles");
 
-        User u = new User(id, email, pwd, nom, prenom, numTel, ville, valeurFidelite, role, salt, date, etat, userIdentifier, username, password, verified, "", roles);
-        userList.add(u);}
-    }
-    return userList;
-}
-    
-    public ArrayList<User> getAllUsers() {
-    ArrayList<User> userList = new ArrayList<>();
-    String url = Statics.BASE_URL + "/json/afficherUser";
-    ConnectionRequest req = new ConnectionRequest(url);
-    req.setPost(false);
-
-    if (req != null) {
-        req.addResponseListener(new ActionListener<NetworkEvent>() {
-            @Override
-            public void actionPerformed(NetworkEvent evt) {
-                try {
-                    ArrayList<User> parsedList = parseUsers(new String(req.getResponseData()));
-                    userList.addAll(parsedList);
-                } catch (ParseException | java.text.ParseException | IOException ex) {
-                    ex.printStackTrace();
-                }
-                req.removeResponseListener(this);
+                User u = new User(id, email, pwd, nom, prenom, numTel, ville, valeurFidelite, role, salt, date, etat, userIdentifier, username, password, verified, "", roles);
+                userList.add(u);
             }
-        });
+        }
+        return userList;
     }
-    NetworkManager.getInstance().addToQueueAndWait(req);
-    return userList;
-}
 
+    public ArrayList<User> getAllUsers() {
+        ArrayList<User> userList = new ArrayList<>();
+        String url = Statics.BASE_URL + "/json/afficherUser";
+        ConnectionRequest req = new ConnectionRequest(url);
+        req.setPost(false);
+
+        if (req != null) {
+            req.addResponseListener(new ActionListener<NetworkEvent>() {
+                @Override
+                public void actionPerformed(NetworkEvent evt) {
+                    try {
+                        ArrayList<User> parsedList = parseUsers(new String(req.getResponseData()));
+                        userList.addAll(parsedList);
+                    } catch (ParseException | java.text.ParseException | IOException ex) {
+                        ex.printStackTrace();
+                    }
+                    req.removeResponseListener(this);
+                }
+            });
+        }
+        NetworkManager.getInstance().addToQueueAndWait(req);
+        return userList;
+    }
 
     // Detail User method
     public User detailUser(int id, User user) {
@@ -319,23 +319,42 @@ public class ServiceUser {
         NetworkManager.getInstance().addToQueueAndWait(req);
         return user;
     }
-    
+
     //Delete 
-    public boolean deleteUser(int id ) {
-        String url = Statics.BASE_URL +"/json/suppUser?id="+id;
-        
+    public boolean deleteUser(int id) {
+        String url = Statics.BASE_URL + "/json/suppUser?id=" + id;
+
         req.setUrl(url);
-        
+
         req.addResponseListener(new ActionListener<NetworkEvent>() {
             @Override
             public void actionPerformed(NetworkEvent evt) {
-                    
-                    req.removeResponseCodeListener(this);
+
+                req.removeResponseCodeListener(this);
             }
         });
-        
+
         NetworkManager.getInstance().addToQueueAndWait(req);
-        return  resultOk;
+        return resultOk;
+    }
+    
+    public boolean editUser(User user) {
+        String url = Statics.BASE_URL + "/json/modifUser?id=" + user.getId();
+        ConnectionRequest req = new ConnectionRequest(url);
+        req.setPost(true);
+        req.addArgument("nom", user.getNom());
+        req.addArgument("prenom", String.valueOf(user.getPrenom()));
+        req.addArgument("ville", String.valueOf(user.getVille()));
+        req.addArgument("numTel", String.valueOf(user.getNumTel()));
+        req.addResponseListener(new ActionListener<NetworkEvent>() {
+            @Override
+            public void actionPerformed(NetworkEvent evt) {
+                resultOk = req.getResponseCode() == 200;
+                req.removeResponseListener(this);
+            }
+        });
+        NetworkManager.getInstance().addToQueueAndWait(req);
+        return resultOk;
     }
 
 }

@@ -22,8 +22,10 @@ public class SessionManager {
     private static String userName ; 
     private static String email; 
     private static String passowrd ;
-    private static String photo;
+    private static String ville;
     private static boolean isAdmin;
+    private static String numTel;
+    public static int valeurFidelite;
     
 
 
@@ -41,15 +43,6 @@ public class SessionManager {
 
     public static void setId(int id) {
         pref.set("id",id);//nsajl id user connecté  w na3tiha identifiant "id";
-    }
-
-    
-        public static boolean getIsAdmin() {
-        return pref.get("isAdmin",isAdmin);// kif nheb njib id user connecté apres njibha men pref 
-    }
-
-    public static void setisAdmin(boolean isAdmin) {
-        pref.set("isAdmin",isAdmin);//nsajl id user connecté  w na3tiha identifiant "id";
     }
 
     
@@ -77,15 +70,37 @@ public class SessionManager {
          pref.set("passowrd",passowrd);
     }
 
-    public static String getPhoto() {
-        return pref.get("photo",photo);
+    public static String getVille() {
+        return pref.get("ville",ville);
     }
 
-    public static void setPhoto(String photo) {
-         pref.set("photo",photo);
+    public static void setVille(String ville) {
+         pref.set("ville",ville);
+    }
+
+    public static boolean isIsAdmin() {
+        return pref.get("isAdmin",isAdmin);
+    }
+
+    public static void setIsAdmin(boolean isAdmin) {
+        pref.set("isAdmin",isAdmin);
+    }
+
+    public static String getNumTel() {
+        return pref.get("numTel",numTel);
+    }
+
+    public static void setNumTel(String numTel) {
+        pref.set("numTel",numTel);
     }
     
-    
+    public static int getValeurFidelite() {
+        return pref.get("valeurFidelite",valeurFidelite);
+    }
+
+    public static void setNumTel(int valeurFidelite) {
+        pref.set("valeurFidelite",valeurFidelite);
+    }
     
     
     

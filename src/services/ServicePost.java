@@ -27,120 +27,123 @@ import utils.Statics;
  * @author ZeroS TF
  */
 public class ServicePost {
-    public static ServicePost instance = null ;
-    
+
+    public static ServicePost instance = null;
+
     public static boolean resultOk = true;
     String json;
 
     //initilisation connection request 
     private ConnectionRequest req;
-    
-    
+
     public static ServicePost getInstance() {
-        if(instance == null )
+        if (instance == null) {
             instance = new ServicePost();
-        return instance ;
+        }
+        return instance;
     }
-  
+
     public ServicePost() {
         req = new ConnectionRequest();
     }
-    
-    public ArrayList<Post> getAllPosts() {
-    ArrayList<Post> postsList = new ArrayList<>();
-    String url = Statics.BASE_URL + "/json/afficherPost";
-    ConnectionRequest req = new ConnectionRequest(url);
-    req.setPost(false);
 
-    if (req != null) {
+    public ArrayList<Post> getAllPosts() {
+        ArrayList<Post> postsList = new ArrayList<>();
+        String url = Statics.BASE_URL + "/json/afficherPost";
+        ConnectionRequest req = new ConnectionRequest(url);
+        req.setPost(false);
+
+        if (req != null) {
+            req.addResponseListener(new ActionListener<NetworkEvent>() {
+                @Override
+                public void actionPerformed(NetworkEvent evt) {
+                    try {
+                        ArrayList<Post> parsedList = parsePosts(new String(req.getResponseData()));
+                        postsList.addAll(parsedList);
+                    } catch (ParseException | java.text.ParseException | IOException ex) {
+                        ex.printStackTrace();
+                    }
+                    req.removeResponseListener(this);
+                }
+            });
+        }
+        NetworkManager.getInstance().addToQueueAndWait(req);
+        return postsList;
+    }
+
+    public ArrayList<Post> parsePosts(String jsonText) throws ParseException, java.text.ParseException, IOException {
+        ArrayList<Post> postList = new ArrayList<>();
+        if (jsonText != null && !jsonText.isEmpty()) {
+            JSONParser j = new JSONParser();
+            Map<String, Object> postListJson = j.parseJSON(new StringReader(jsonText));
+            List<Map<String, Object>> list = (List<Map<String, Object>>) postListJson.get("root");
+            for (Map<String, Object> obj : list) {
+                Post p = new Post();
+                float id = Float.parseFloat(obj.get("idPost").toString());
+                p.setIdPost((int) id);
+                p.setDescription(obj.get("description").toString());
+                String dateString = obj.get("dateP").toString(); // Assuming the date is already formatted correctly
+                System.out.println("datestring:::::::"+dateString);
+                Date date = new SimpleDateFormat("yyyy-MM-dd").parse(dateString);
+                p.setDateP(date);
+                p.setImage("");
+                float idUser = Float.parseFloat(obj.get("idUser").toString());
+                p.setIdUser((int) idUser);
+                System.out.println("ID USER:::::::::" + idUser + "     " + (int) idUser);
+                postList.add(p);
+            }
+        }
+        return postList;
+    }
+
+    public boolean addPost(Post p) {
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        String url = Statics.BASE_URL + "/json/ajouterPost";
+        ConnectionRequest req = new ConnectionRequest(url);
+        req.setPost(true);
+        req.addArgument("description", p.getDescription());
+        req.addArgument("idUser", String.valueOf(p.getIdUser()));
         req.addResponseListener(new ActionListener<NetworkEvent>() {
             @Override
             public void actionPerformed(NetworkEvent evt) {
-                try {
-                    ArrayList<Post> parsedList = parsePosts(new String(req.getResponseData()));
-                    postsList.addAll(parsedList);
-                } catch (ParseException | java.text.ParseException | IOException ex) {
-                    ex.printStackTrace();
+                resultOk = req.getResponseCode() == 200;
+                req.removeResponseListener(this);
+                if (resultOk) {
+                    Dialog.show("Success", "Post added successfully", "OK", null);
+                } else {
+                    Dialog.show("Error", "Error adding the post", "OK", null);
                 }
+            }
+        });
+        NetworkManager.getInstance().addToQueueAndWait(req);
+        return resultOk;
+    }
+
+    public boolean editPost(Post post) {
+        String url = Statics.BASE_URL + "/json/modifPost?id=" + post.getIdPost();
+        ConnectionRequest req = new ConnectionRequest(url);
+        req.setPost(true);
+        req.addArgument("description", post.getDescription());
+        System.out.println("ekhdem!!!!!!!!!!!!"+post.getDescription());
+        req.addResponseListener(new ActionListener<NetworkEvent>() {
+            @Override
+            public void actionPerformed(NetworkEvent evt) {
+                resultOk = req.getResponseCode() == 200;
                 req.removeResponseListener(this);
             }
         });
-    }
-    NetworkManager.getInstance().addToQueueAndWait(req);
-    return postsList;
-}
-
-public ArrayList<Post> parsePosts(String jsonText) throws ParseException, java.text.ParseException, IOException {
-    ArrayList<Post> postList = new ArrayList<>();
-    if (jsonText != null && !jsonText.isEmpty()) {
-        JSONParser j = new JSONParser();
-        Map<String, Object> postListJson = j.parseJSON(new StringReader(jsonText));
-        List<Map<String, Object>> list = (List<Map<String, Object>>) postListJson.get("root");
-        for (Map<String, Object> obj : list) {
-            Post p = new Post();
-            float id = Float.parseFloat(obj.get("idPost").toString());
-            p.setIdPost((int) id);
-            p.setDescription(obj.get("description").toString());
-            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-            Date date = formatter.parse(obj.get("dateP").toString());
-            p.setDateP(date);
-            p.setImage(obj.get("image").toString());
-            float idUser = Float.parseFloat(obj.get("idUser").toString());
-            p.setIdUser((int) idUser);
-            System.out.println("ID USER:::::::::"+idUser+"     "+(int) idUser);
-            postList.add(p);
-        }
-    }
-    return postList;
-}
-
-public boolean addPost(Post p) {
-    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-    String url = Statics.BASE_URL + "/JSON/ajouterPost";
-    ConnectionRequest req = new ConnectionRequest(url);
-    req.setPost(true);
-    req.addArgument("description", p.getDescription());
-    req.addArgument("idUser", String.valueOf(p.getIdUser()));
-    req.addResponseListener(new ActionListener<NetworkEvent>() {
-        @Override
-        public void actionPerformed(NetworkEvent evt) {
-            resultOk = req.getResponseCode() == 200;
-            req.removeResponseListener(this);
-            if (resultOk) {
-                Dialog.show("Success", "Post added successfully", "OK", null);
-            } else {
-                Dialog.show("Error", "Error adding the post", "OK", null);
-            }
-        }
-    });
-    NetworkManager.getInstance().addToQueueAndWait(req);
-    return resultOk;
-}
-
-public boolean editPost(Post post) {
-    String url = Statics.BASE_URL + "/JSON/modifPost?id=" + post.getIdPost();
-    ConnectionRequest req = new ConnectionRequest(url);
-    req.setPost(false);
-    req.addArgument("description", post.getDescription());
-    req.addArgument("idUser", String.valueOf(post.getIdUser()));
-    req.addResponseListener(new ActionListener<NetworkEvent>() {
-        @Override
-        public void actionPerformed(NetworkEvent evt) {
-            resultOk = req.getResponseCode() == 200;
-            req.removeResponseListener(this);
-        }
-    });
-    NetworkManager.getInstance().addToQueueAndWait(req);
-    return resultOk;
-}
-public void deletePost(int id) {
-    Dialog d = new Dialog();
-    if (d.show("Delete Post", "Do you really want to remove this Post?", "Yes", "No")) {
-        ConnectionRequest req = new ConnectionRequest();
-        req.setUrl(Statics.BASE_URL + "/JSON/suppPost?id=" + id);
         NetworkManager.getInstance().addToQueueAndWait(req);
-        d.dispose();
+        return resultOk;
     }
-}
-    
+
+    public void deletePost(int id) {
+        Dialog d = new Dialog();
+        if (d.show("Delete Post", "Do you really want to remove this Post?", "Yes", "No")) {
+            ConnectionRequest req = new ConnectionRequest();
+            req.setUrl(Statics.BASE_URL + "/json/suppPost?id=" + id);
+            NetworkManager.getInstance().addToQueueAndWait(req);
+            d.dispose();
+        }
+    }
+
 }

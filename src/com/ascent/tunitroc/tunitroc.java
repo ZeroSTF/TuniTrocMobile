@@ -20,6 +20,7 @@ import com.codename1.ui.validation.GroupConstraint;
 import com.codename1.ui.validation.LengthConstraint;
 import com.codename1.ui.validation.RegexConstraint;
 import com.codename1.ui.validation.Validator;
+import gui.ListPostForm;
 import gui.MapForm;
 import gui.SignInForm;
 
@@ -62,7 +63,7 @@ public class tunitroc {
         }
         //houni awl interface yet7al
        // new MapForm(); //n7oto signup bch yjibha awl form
-        new SignInForm(theme).show();
+        new ListPostForm(theme).show();
     }
 
     public void stop() {

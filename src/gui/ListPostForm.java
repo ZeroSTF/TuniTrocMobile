@@ -5,6 +5,7 @@
  */
 package gui;
 
+import com.codename1.components.InfiniteProgress;
 import com.codename1.components.ScaleImageLabel;
 import com.codename1.components.SpanLabel;
 import com.codename1.ui.Button;
@@ -14,6 +15,7 @@ import static com.codename1.ui.Component.BOTTOM;
 import static com.codename1.ui.Component.CENTER;
 import static com.codename1.ui.Component.LEFT;
 import com.codename1.ui.Container;
+import com.codename1.ui.Dialog;
 import com.codename1.ui.Display;
 import com.codename1.ui.Form;
 import com.codename1.ui.Graphics;
@@ -101,6 +103,38 @@ public class ListPostForm extends BaseForm {
 
         Component.setSameSize(radioContainer, s1, s2);
         add(LayeredLayout.encloseIn(swipe, radioContainer));
+        
+        ButtonGroup barGroup = new ButtonGroup();
+        RadioButton mesListes = RadioButton.createToggle("Ajouter", barGroup);
+        mesListes.setUIID("SelectBar");
+        RadioButton liste = RadioButton.createToggle("...", barGroup);
+        liste.setUIID("SelectBar");
+        RadioButton partage = RadioButton.createToggle("Posts", barGroup);
+        partage.setUIID("SelectBar");
+        Label arrow = new Label(res.getImage("news-tab-down-arrow.png"), "Container");
+
+        partage.addActionListener((e) -> {
+            InfiniteProgress ip = new InfiniteProgress();
+            final Dialog ipDlg = ip.showInifiniteBlocking();
+            new ListPostForm(res).show();
+            //////////ajouutttt
+            //  ListPostForm a = new ListPostForm(res);
+            //  a.show();
+            refreshTheme();
+        });
+        mesListes.addActionListener((e) -> {
+            InfiniteProgress ip = new InfiniteProgress();
+            final Dialog ipDlg = ip.showInifiniteBlocking();
+            new AddPostForm(res).show();
+            //////////ajouutttt
+            //  ListPostForm a = new ListPostForm(res);
+            //  a.show();
+            refreshTheme();
+        });
+        
+        add(LayeredLayout.encloseIn(
+                GridLayout.encloseIn(3, mesListes, liste, partage)
+        ));
 
         reclamations = ServicePost.getInstance().getAllPosts();
         System.out.println("\nles resulats sont::::::::" + reclamations);
@@ -121,15 +155,15 @@ public class ListPostForm extends BaseForm {
             descriptionLabel.setUIID("UserLabel");
             Label dateLabel = new Label("Date: " + user.getDateP());
             dateLabel.setUIID("UserLabel");
-            Label imageLabel = new Label("Image: " + user.getImage());
-            imageLabel.setUIID("UserLabel");
+           
             Label idUserLabel = new Label("User ID: " + user.getIdUser());
             idUserLabel.setUIID("UserLabel");
 
             // Create buttons to edit and delete the reclamation
             Button editBtn = new Button("Edit");
             editBtn.addActionListener(e -> {
-                //   new EditReclamationForm(reclamation).show();
+                    
+                   new EditPostForm(res,user).show();
             });
             Button deleteBtn = new Button("Delete");
             deleteBtn.addActionListener(e -> {
@@ -145,7 +179,6 @@ public class ListPostForm extends BaseForm {
             labelsContainer.add(idLabel);
             labelsContainer.add(descriptionLabel);
             labelsContainer.add(dateLabel);
-            labelsContainer.add(imageLabel);
             labelsContainer.add(idUserLabel);
 
             reclamationRow.add(BorderLayout.CENTER, labelsContainer);
@@ -153,7 +186,7 @@ public class ListPostForm extends BaseForm {
             // Create a container to hold the buttons
             Container buttonsContainer = new Container(new GridLayout(2, 1));
             buttonsContainer.setUIID("ReclamationButtonBox");
-            //buttonsContainer.add(editBtn);
+            buttonsContainer.add(editBtn);
             buttonsContainer.add(deleteBtn);
 
             reclamationRow.add(BorderLayout.EAST, buttonsContainer);

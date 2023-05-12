@@ -51,7 +51,7 @@ public class CleanModern {
             current.show();
             return;
         }
-        new WalkthruForm(theme).show();
+        
     }
 
     public void stop() {
