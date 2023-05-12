@@ -222,7 +222,6 @@ public class ServiceUser {
             }
         });
         NetworkManager.getInstance().addToQueueAndWait(req);
-        System.out.println("\nles resulats sont::::::::" + result);
         return result;
     }
 

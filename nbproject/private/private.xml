@@ -4,7 +4,27 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+            <file>file:/C:/Users/Administrateur/Documents/NetBeansProjects/tunitrocmobile/src/utils/Statics.java</file>
             <file>file:/C:/Users/Administrateur/Documents/NetBeansProjects/tunitrocmobile/src/com/ascent/tunitroc/tunitroc.java</file>
+            <file>file:/C:/Users/Administrateur/Documents/NetBeansProjects/tunitrocmobile/src/gui/ListUserForm.java</file>
+            <file>file:/C:/Users/Administrateur/Documents/NetBeansProjects/tunitrocmobile/src/gui/SessionManager.java</file>
+            <file>file:/C:/Users/Administrateur/Documents/NetBeansProjects/tunitrocmobile/src/gui/NewsfeedForm.java</file>
+            <file>file:/C:/Users/Administrateur/Documents/NetBeansProjects/tunitrocmobile/src/gui/ActivateForm.java</file>
+            <file>file:/C:/Users/Administrateur/Documents/NetBeansProjects/tunitrocmobile/src/services/ServicePost.java</file>
+            <file>file:/C:/Users/Administrateur/Documents/NetBeansProjects/tunitrocmobile/src/gui/ListPostForm.java</file>
+            <file>file:/C:/Users/Administrateur/Documents/NetBeansProjects/tunitrocmobile/src/gui/CleanModern.java</file>
+            <file>file:/C:/Users/Administrateur/Documents/NetBeansProjects/tunitrocmobile/src/services/ServiceUser.java</file>
+            <file>file:/C:/Users/Administrateur/Documents/NetBeansProjects/tunitrocmobile/src/entities/Post.java</file>
+            <file>file:/C:/Users/Administrateur/Documents/NetBeansProjects/tunitrocmobile/src/gui/SignUpForm.java</file>
+            <file>file:/C:/Users/Administrateur/Documents/NetBeansProjects/tunitrocmobile/src/gui/SignInForm.java</file>
+            <file>file:/C:/Users/Administrateur/Documents/NetBeansProjects/tunitrocmobile/src/gui/EditPostForm.java</file>
+            <file>file:/C:/Users/Administrateur/Documents/NetBeansProjects/tunitrocmobile/src/gui/BaseForm.java</file>
+            <file>file:/C:/Users/Administrateur/Documents/NetBeansProjects/tunitrocmobile/src/entities/User.java</file>
+            <file>file:/C:/Users/Administrateur/Documents/NetBeansProjects/tunitrocmobile/src/gui/AddPostForm.java</file>
+            <file>file:/C:/Users/Administrateur/Documents/NetBeansProjects/tunitrocmobile/src/gui/MapForm.java</file>
+            <file>file:/C:/Users/Administrateur/Documents/NetBeansProjects/tunitrocmobile/src/gui/ProfileForm.java</file>
+            <file>jar:file:/C:/Users/Administrateur/Documents/NetBeansProjects/tunitrocmobile/lib/CodenameOne_SRC.zip!/com/codename1/io/NetworkManager.java</file>
+            <file>jar:file:/C:/Users/Administrateur/Documents/NetBeansProjects/tunitrocmobile/lib/CodenameOne_SRC.zip!/com/codename1/ui/FontImage.java</file>
         </group>
     </open-files>
 </project-private>
