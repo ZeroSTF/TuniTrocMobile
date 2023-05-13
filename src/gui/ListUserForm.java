@@ -25,6 +25,7 @@ import com.codename1.ui.Image;
 import com.codename1.ui.Label;
 import com.codename1.ui.RadioButton;
 import com.codename1.ui.Tabs;
+import com.codename1.ui.TextField;
 import com.codename1.ui.Toolbar;
 import com.codename1.ui.layouts.BorderLayout;
 import com.codename1.ui.layouts.BoxLayout;
@@ -44,10 +45,13 @@ import java.util.ArrayList;
 public class ListUserForm extends BaseForm {
 
     Form current;
-    private ArrayList<User> reclamations;
+    private ArrayList<User> allReclamations; // Store all users
+    private ArrayList<User> filteredReclamations; // Store filtered users
+    private TextField searchField; // Add this field
+    private Container reclamationContainer;
 
     public ListUserForm(Resources res) {
-        super("Reclamations", BoxLayout.y()); //herigate men Newsfeed w l formulaire vertical
+        super("Utilisateurs", BoxLayout.y()); //herigate men Newsfeed w l formulaire vertical
         Toolbar tb = new Toolbar(true);
         current = this;
         setToolbar(tb);
@@ -105,14 +109,15 @@ public class ListUserForm extends BaseForm {
         Component.setSameSize(radioContainer, s1, s2);
         add(LayeredLayout.encloseIn(swipe, radioContainer));
 
-        reclamations = ServiceUser.getInstance().getAllUsers();
-        System.out.println("\nles resulats sont::::::::"+reclamations);
+        allReclamations = ServiceUser.getInstance().getAllUsers();
+        filteredReclamations = new ArrayList<>(allReclamations);
+        System.out.println("\nles resulats sont::::::::" + allReclamations);
         this.setScrollableY(true);
         // Create a container to hold the reclamations
-        Container reclamationContainer = new Container();
+        reclamationContainer = new Container();
         reclamationContainer.setLayout(new BoxLayout(BoxLayout.Y_AXIS));
         // Add each reclamation to the container with buttons to edit and delete it
-        for (User user : reclamations) {
+        for (User user : allReclamations) {
             // Create a container to hold the reclamation's information and buttons
             Container reclamationRow = new Container(new BorderLayout());
             reclamationRow.setUIID("ReclamationBox");
@@ -151,7 +156,6 @@ public class ListUserForm extends BaseForm {
                 ServiceUser.getInstance().deleteUser(user.getId());
 
                 // Remove the reclamation from the container
-                
             });
 
             // Add the labels to the reclamation row
@@ -179,6 +183,82 @@ public class ListUserForm extends BaseForm {
         // Add the container to the form
         add(reclamationContainer);
 
+        // Create the search field
+        searchField = new TextField("", "Search");
+        searchField.addDataChangeListener((i, ii) -> {
+            String searchQuery = searchField.getText();
+
+            filterUsers(searchQuery);
+        });
+
+        tb.setTitleComponent(searchField);
+
+    }
+
+    private void filterUsers(String searchQuery) {
+        reclamationContainer.removeAll();
+        filteredReclamations.clear();
+
+        if (searchQuery.isEmpty()) {
+            filteredReclamations.addAll(allReclamations);
+        } else {
+            String lowercaseQuery = searchQuery.toLowerCase();
+
+            for (User user : allReclamations) {
+                if (userMatchesQuery(user, lowercaseQuery)) {
+                    filteredReclamations.add(user);
+                }
+            }
+        }
+
+        for (User user : filteredReclamations) {
+            Container reclamationRow = createUserContainer(user);
+            reclamationContainer.add(reclamationRow);
+        }
+
+        revalidate();
+        repaint();
+    }
+
+    private boolean userMatchesQuery(User user, String searchQuery) {
+        String lowercasedNom = user.getNom().toLowerCase();
+        String lowercasedPrenom = user.getPrenom().toLowerCase();
+        String lowercasedEmail = user.getEmail().toLowerCase();
+
+        return lowercasedNom.contains(searchQuery)
+                || lowercasedPrenom.contains(searchQuery)
+                || lowercasedEmail.contains(searchQuery);
+    }
+
+    private Container createUserContainer(User user) {
+        Container reclamationRow = new Container(new BorderLayout());
+        reclamationRow.setUIID("ReclamationBox");
+
+        // Create labels to display the user's information
+        Label idLabel = new Label("ID: " + user.getId());
+        idLabel.setUIID("UserLabel");
+        Label nomLabel = new Label("Nom: " + user.getNom());
+        nomLabel.setUIID("UserLabel");
+        Label emailLabel = new Label("Email: " + user.getEmail());
+        emailLabel.setUIID("UserLabel");
+        // Add more labels for other user information
+
+        // Create a container to hold the labels
+        Container labelsContainer = new Container(new BoxLayout(BoxLayout.Y_AXIS));
+        labelsContainer.add(idLabel);
+        labelsContainer.add(nomLabel);
+        labelsContainer.add(emailLabel);
+        // Add more labels to the container
+
+        // Create a container to hold the buttons
+        Container buttonsContainer = new Container(new BoxLayout(BoxLayout.Y_AXIS));
+        // Create buttons and add them to the container
+
+        // Add the labels container and buttons container to the reclamation row
+        reclamationRow.add(BorderLayout.CENTER, labelsContainer);
+        reclamationRow.add(BorderLayout.EAST, buttonsContainer);
+
+        return reclamationRow;
     }
 
     private void addTab(Tabs swipe, Label spacer, Image image, String string, String text, Resources res) {

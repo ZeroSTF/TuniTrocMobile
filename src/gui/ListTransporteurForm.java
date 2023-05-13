@@ -22,6 +22,7 @@ import com.codename1.ui.Image;
 import com.codename1.ui.Label;
 import com.codename1.ui.RadioButton;
 import com.codename1.ui.Tabs;
+import com.codename1.ui.TextField;
 import com.codename1.ui.Toolbar;
 import com.codename1.ui.layouts.BorderLayout;
 import com.codename1.ui.layouts.BoxLayout;
@@ -40,33 +41,45 @@ import services.ServiceTransporteur;
  *
  * @author ilyes
  */
-public class ListTransporteurForm extends BaseForm{
-    
+public class ListTransporteurForm extends BaseForm {
+
     Form current;
+    private ArrayList<Transporteur> allReclamations; // Store all users
+    private ArrayList<Transporteur> filteredReclamations; // Store filtered users
+    private TextField searchField; // Add this field
+    private Container reclamationsContainer;
     private ArrayList<Transporteur> transporteurs;
-    public ListTransporteurForm(Resources res ) {
-          super("Transporteurs",BoxLayout.y()); //herigate men Newsfeed w l formulaire vertical
+
+    public ListTransporteurForm(Resources res) {
+        super("Transporteurs", BoxLayout.y()); //herigate men Newsfeed w l formulaire vertical
         Toolbar tb = new Toolbar(true);
-        current = this ;
+        current = this;
         setToolbar(tb);
         getTitleArea().setUIID("Container");
         setTitle("Transporteurs");
         getContentPane().setScrollVisible(false);
         addSideMenu(res);
-        
-        
-        tb.addSearchCommand(e ->  {
-            
+        searchField = new TextField("", "Search");
+        searchField.addDataChangeListener((i, ii) -> {
+            String searchQuery = searchField.getText();
+
+            filterReclamations(searchQuery, res);
         });
-        
+
+        tb.setTitleComponent(searchField);
+
+        tb.addSearchCommand(e -> {
+
+        });
+
         Tabs swipe = new Tabs();
-        
+
         Label s1 = new Label();
         Label s2 = new Label();
-        
-        addTab(swipe,s1, res.getImage("back-logo.jpeg"),"","",res);
 
-         swipe.setUIID("Container");
+        addTab(swipe, s1, res.getImage("back-logo.jpeg"), "", "", res);
+
+        swipe.setUIID("Container");
         swipe.getContentPane().setUIID("Container");
         swipe.hideTabs();
 
@@ -103,7 +116,7 @@ public class ListTransporteurForm extends BaseForm{
 
         Component.setSameSize(radioContainer, s1, s2);
         add(LayeredLayout.encloseIn(swipe, radioContainer));
-        
+
         ButtonGroup barGroup = new ButtonGroup();
         RadioButton mesListes = RadioButton.createToggle("Ajouter transporteur", barGroup);
         mesListes.setUIID("SelectBar");
@@ -113,12 +126,10 @@ public class ListTransporteurForm extends BaseForm{
         partage.setUIID("SelectBar");
         Label arrow = new Label(res.getImage("news-tab-down-arrow.png"), "Container");
 
-
-
         mesListes.addActionListener((e) -> {
-               InfiniteProgress ip = new InfiniteProgress();
-        final Dialog ipDlg = ip.showInifiniteBlocking();
-        new AddTransporteurForm(res).show();
+            InfiniteProgress ip = new InfiniteProgress();
+            final Dialog ipDlg = ip.showInifiniteBlocking();
+            new AddTransporteurForm(res).show();
             refreshTheme();
         });
 
@@ -141,23 +152,160 @@ public class ListTransporteurForm extends BaseForm{
             updateArrowPosition(barGroup.getRadioButton(barGroup.getSelectedIndex()), arrow);
         });
 
+//        // Get all the transporteurs from the service
+//ArrayList<Transporteur> transporteurs = ServiceTransporteur.getInstance().getAllTransporteurs();
+//
+//// Create container to hold the list of transporteurs
+//Container transporteursContainer = new Container();
+//transporteursContainer.setLayout(new BoxLayout(BoxLayout.Y_AXIS));
+//transporteursContainer.setScrollableY(true);
+//
+//// Add each transporteur to the container with buttons to edit and delete it
+//for (Transporteur transporteur : transporteurs) {
+//    // Create a container to hold the transporteur's information and buttons
+//    Container transporteurRow = new Container(new BorderLayout());
+//    transporteurRow.setUIID("TransporteurBox");
+//
+//    // Create labels to display the transporteur's information
+//    Label idLabel = new Label("ID: " + transporteur.getId());
+//    idLabel.setUIID("TransporteurLabel");
+//    Label nomLabel = new Label("Nom: " + transporteur.getNom());
+//    nomLabel.setUIID("TransporteurLabel");
+//    Label prenomLabel = new Label("Prenom: " + transporteur.getPrenom());
+//    prenomLabel.setUIID("TransporteurLabel");
+//    Label numTelLabel = new Label("NumTel: " + transporteur.getNumTel());
+//    numTelLabel.setUIID("TransporteurLabel");
+//
+//    // Create buttons to edit and delete the transporteur
+//    Button editBtn = new Button("Edit");
+//    editBtn.addActionListener(e -> {
+//        new EditTransporteurForm(res, transporteur).show();
+//    });
+//    Button deleteBtn = new Button("Delete");
+//    deleteBtn.addActionListener(e -> {
+//        // Delete the transporteur from the server
+//        ServiceTransporteur.getInstance().deleteTransporteur(transporteur.getId());
+//
+//        // Remove the transporteur from the container
+//        transporteursContainer.removeComponent(transporteurRow);
+//    });
+//
+//    // Add the labels to the transporteur row
+//    Container labelsContainer = new Container(new GridLayout(4, 1));
+//    labelsContainer.add(idLabel);
+//    labelsContainer.add(nomLabel);
+//    labelsContainer.add(prenomLabel);
+//    labelsContainer.add(numTelLabel);
+//
+//    transporteurRow.add(BorderLayout.CENTER, labelsContainer);
+//
+//    // Create a container to hold the buttons
+//    Container buttonsContainer = new Container(new GridLayout(2, 1));
+//    buttonsContainer.setUIID("TransporteurButtonBox");
+//    buttonsContainer.add(editBtn);
+//    buttonsContainer.add(deleteBtn);
+//
+//    transporteurRow.add(BorderLayout.EAST, buttonsContainer);
+//
+//    // Add the transporteur row to the container
+//    transporteursContainer.add(transporteurRow);
+//}
+//
+//// Add the container to the form
+//add(transporteursContainer);
+        allReclamations = ServiceTransporteur.getInstance().getAllTransporteurs();
 
-        
-        
-       
-        
-        
-        // Get all the transporteurs from the service
-ArrayList<Transporteur> transporteurs = ServiceTransporteur.getInstance().getAllTransporteurs();
+        filteredReclamations = new ArrayList<>(allReclamations);
 
-// Create container to hold the list of transporteurs
-Container transporteursContainer = new Container();
-transporteursContainer.setLayout(new BoxLayout(BoxLayout.Y_AXIS));
-transporteursContainer.setScrollableY(true);
+// Create container to hold the list of reclamations
+        reclamationsContainer = new Container();
+        reclamationsContainer.setLayout(new BoxLayout(BoxLayout.Y_AXIS));
+        this.setScrollableY(true);
 
-// Add each transporteur to the container with buttons to edit and delete it
-for (Transporteur transporteur : transporteurs) {
-    // Create a container to hold the transporteur's information and buttons
+// Add each reclamation to the container with buttons to edit and delete it
+        for (Transporteur reclamation : filteredReclamations) {
+            Container reclamationRow = createProductContainer(reclamation, res);
+            reclamationsContainer.add(reclamationRow);
+        }
+
+// Add the container to the form
+        add(reclamationsContainer);
+
+    }
+    private void filterReclamations(String searchQuery, Resources res) {
+        reclamationsContainer.removeAll();
+        filteredReclamations.clear();
+
+        if (searchQuery.isEmpty()) {
+            filteredReclamations.addAll(allReclamations);
+        } else {
+            // Filter products based on the search query
+            for (Transporteur product : allReclamations) {
+
+                if (productMatchesQuery(product, searchQuery)) {
+                    filteredReclamations.add(product);
+                }
+            }
+        }
+
+        for (Transporteur product : filteredReclamations) {
+            Container productRow = createProductContainer(product, res);
+            reclamationsContainer.add(productRow);
+        }
+
+        revalidate();
+        repaint();
+    }
+
+    private Container createProductContainer(Transporteur transporteur, Resources res) {
+//            Container reclamationRow = new Container(new BorderLayout());
+//            reclamationRow.setUIID("ReclamationBox");
+//
+//            // Create labels to display the user's information
+//            Label idLabel = new Label("ID: " + product.getIdPost());
+//            idLabel.setUIID("UserLabel");
+//            Label descriptionLabel = new Label("Description: " + product.getDescription());
+//            descriptionLabel.setUIID("UserLabel");
+//            Label dateLabel = new Label("Date: " + product.getDateP());
+//            dateLabel.setUIID("UserLabel");
+//           
+//            Label idUserLabel = new Label("User ID: " + product.getIdUser());
+//            idUserLabel.setUIID("UserLabel");
+//
+//            // Create buttons to edit and delete the reclamation
+//            Button editBtn = new Button("Edit");
+//            editBtn.addActionListener(e -> {
+//                    
+//                   new EditPostForm(res,Transporteur).show();
+//            });
+//            Button deleteBtn = new Button("Delete");
+//            deleteBtn.addActionListener(e -> {
+//                // Delete the reclamation from the server
+//                ServicePost.getInstance().deletePost(product.getIdPost());
+//
+//                // Remove the reclamation from the container
+//                reclamationsContainer.removeComponent(reclamationRow);
+//            });
+//
+//            // Add the labels to the reclamation row
+//            Container labelsContainer = new Container(new GridLayout(5, 1));
+//            labelsContainer.add(idLabel);
+//            labelsContainer.add(descriptionLabel);
+//            labelsContainer.add(dateLabel);
+//            labelsContainer.add(idUserLabel);
+//
+//
+//
+//        productRow.add(BorderLayout.CENTER, labelsContainer);
+//
+//        // Create a container to hold the buttons
+//        Container buttonsContainer = new Container(new GridLayout(2, 1));
+//        buttonsContainer.setUIID("ProductButtonBox");
+//        buttonsContainer.add(editBtn);
+//        buttonsContainer.add(deleteBtn);
+//
+//        productRow.add(BorderLayout.EAST, buttonsContainer);
+// Create a container to hold the transporteur's information and buttons
     Container transporteurRow = new Container(new BorderLayout());
     transporteurRow.setUIID("TransporteurBox");
 
@@ -182,7 +330,7 @@ for (Transporteur transporteur : transporteurs) {
         ServiceTransporteur.getInstance().deleteTransporteur(transporteur.getId());
 
         // Remove the transporteur from the container
-        transporteursContainer.removeComponent(transporteurRow);
+        reclamationsContainer.removeComponent(transporteurRow);
     });
 
     // Add the labels to the transporteur row
@@ -202,83 +350,63 @@ for (Transporteur transporteur : transporteurs) {
 
     transporteurRow.add(BorderLayout.EAST, buttonsContainer);
 
-    // Add the transporteur row to the container
-    transporteursContainer.add(transporteurRow);
-}
-
-// Add the container to the form
-add(transporteursContainer);
-
-
-        
-        
-        
+        return transporteurRow;
     }
-    
-    
-    
-    
-    
-    
-    
-    
-       private void addTab(Tabs swipe, Label spacer , Image image, String string, String text, Resources res) {
+
+    private boolean productMatchesQuery(Transporteur product, String searchQuery) {
+        String lowercaseNom = product.getNom().toLowerCase();
+        String lowercasePrenom =product.getPrenom().toLowerCase();
+
+        // Compare the attributes with the search query
+        return (lowercaseNom.contains(searchQuery)||lowercasePrenom.contains(searchQuery));
+    }
+
+    private void addTab(Tabs swipe, Label spacer, Image image, String string, String text, Resources res) {
         int size = Math.min(Display.getInstance().getDisplayWidth(), Display.getInstance().getDisplayHeight());
-        
-        if(image.getHeight() < size) {
+
+        if (image.getHeight() < size) {
             image = image.scaledHeight(size);
         }
-        
-        
-        
-        if(image.getHeight() > Display.getInstance().getDisplayHeight() / 2 ) {
+
+        if (image.getHeight() > Display.getInstance().getDisplayHeight() / 2) {
             image = image.scaledHeight(Display.getInstance().getDisplayHeight() / 2);
         }
-        
+
         ScaleImageLabel imageScale = new ScaleImageLabel(image);
         imageScale.setUIID("Container");
         imageScale.setBackgroundType(Style.BACKGROUND_IMAGE_SCALED_FILL);
-        
-        Label overLay = new Label("","ImageOverlay");
-        
-        
-        Container page1 = 
-                LayeredLayout.encloseIn(
-                imageScale,
+
+        Label overLay = new Label("", "ImageOverlay");
+
+        Container page1
+                = LayeredLayout.encloseIn(
+                        imageScale,
                         overLay,
                         BorderLayout.south(
-                        BoxLayout.encloseY(
-                        new SpanLabel(text, "LargeWhiteText"),
+                                BoxLayout.encloseY(
+                                        new SpanLabel(text, "LargeWhiteText"),
                                         spacer
+                                )
                         )
-                    )
                 );
-        
-        swipe.addTab("",res.getImage("back-logo.jpeg"), page1);
-        
-        
-        
-        
+
+        swipe.addTab("", res.getImage("back-logo.jpeg"), page1);
+
     }
-    
-    
-    
-    public void bindButtonSelection(Button btn , Label l ) {
-        
-        btn.addActionListener(e-> {
-        if(btn.isSelected()) {
-            updateArrowPosition(btn,l);
-        }
-    });
+
+    public void bindButtonSelection(Button btn, Label l) {
+
+        btn.addActionListener(e -> {
+            if (btn.isSelected()) {
+                updateArrowPosition(btn, l);
+            }
+        });
     }
 
     private void updateArrowPosition(Button btn, Label l) {
-        
-        l.getUnselectedStyle().setMargin(LEFT, btn.getX() + btn.getWidth()  / 2  - l.getWidth() / 2 );
+
+        l.getUnselectedStyle().setMargin(LEFT, btn.getX() + btn.getWidth() / 2 - l.getWidth() / 2);
         l.getParent().repaint();
     }
 
-    
-   
-   
 }

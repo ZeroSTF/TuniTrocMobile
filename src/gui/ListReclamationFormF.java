@@ -10,7 +10,6 @@ package gui;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 import com.codename1.components.InfiniteProgress;
 import com.codename1.components.ScaleImageLabel;
 import com.codename1.components.SpanLabel;
@@ -40,38 +39,53 @@ import com.codename1.ui.util.Resources;
 import entities.Reclamation;
 import java.util.ArrayList;
 import services.ServiceReclamation;
+import com.codename1.components.SpanLabel;
+import com.codename1.ui.TextField;
+import entities.User;
+import services.ServiceUser;
 
 /**
  *
  * @author Lenovo
  */
-public class ListReclamationFormF extends BaseForm{
-    
+public class ListReclamationFormF extends BaseForm {
+
     Form current;
-    private ArrayList<Reclamation> reclamations;
-    public ListReclamationFormF(Resources res ) {
-          super("Reclamations",BoxLayout.y()); //herigate men Newsfeed w l formulaire vertical
+    private ArrayList<Reclamation> allReclamations; // Store all users
+    private ArrayList<Reclamation> filteredReclamations; // Store filtered users
+    private TextField searchField; // Add this field
+    private Container reclamationsContainer;
+
+    public ListReclamationFormF(Resources res) {
+        super("Vos Reclamations", BoxLayout.y()); //herigate men Newsfeed w l formulaire vertical
         Toolbar tb = new Toolbar(true);
-        current = this ;
+        current = this;
         setToolbar(tb);
         getTitleArea().setUIID("Container");
         setTitle("Reclamations");
         getContentPane().setScrollVisible(false);
         addSideMenu(res);
-        
-        
-        tb.addSearchCommand(e ->  {
-            
+        searchField = new TextField("", "Search");
+        searchField.addDataChangeListener((i, ii) -> {
+            String searchQuery = searchField.getText();
+
+            filterReclamations(searchQuery);
         });
-        
+
+        tb.setTitleComponent(searchField);
+
+        tb.addSearchCommand(e -> {
+
+        });
+
         Tabs swipe = new Tabs();
-        
+
         Label s1 = new Label();
         Label s2 = new Label();
-        
-        addTab(swipe,s1, res.getImage("back-logo.jpeg"),"","",res);
 
-         swipe.setUIID("Container");
+        addTab(swipe, s1, res.getImage("back-logo.jpeg"), "", "", res);
+
+        swipe.setUIID("Container");
         swipe.getContentPane().setUIID("Container");
         swipe.hideTabs();
 
@@ -103,13 +117,12 @@ public class ListReclamationFormF extends BaseForm{
         swipe.addSelectionListener((i, ii) -> {
             if (!rbs[ii].isSelected()) {
                 rbs[ii].setSelected(true);
-            } 
+            }
         });
 
         Component.setSameSize(radioContainer, s1, s2);
         add(LayeredLayout.encloseIn(swipe, radioContainer));
 
-        
         ButtonGroup barGroup = new ButtonGroup();
         RadioButton mesListes = RadioButton.createToggle("Ajouter", barGroup);
         mesListes.setUIID("SelectBar");
@@ -118,24 +131,22 @@ public class ListReclamationFormF extends BaseForm{
         RadioButton partage = RadioButton.createToggle("Reclamations", barGroup);
         partage.setUIID("SelectBar");
 
-
-     //   mesListes.addActionListener((e) -> {
-       //        InfiniteProgress ip = new InfiniteProgress();
-      //  final Dialog ipDlg = ip.showInifiniteBlocking();
+        //   mesListes.addActionListener((e) -> {
+        //        InfiniteProgress ip = new InfiniteProgress();
+        //  final Dialog ipDlg = ip.showInifiniteBlocking();
         //new AddReclamationForm(res).show();
         //////////ajouutttt
         //  ListPostForm a = new ListPostForm(res);
-          //  a.show();
-    //        refreshTheme();
-     //   });
-
+        //  a.show();
+        //        refreshTheme();
+        //   });
         mesListes.addActionListener((e) -> {
-               InfiniteProgress ip = new InfiniteProgress();
-        final Dialog ipDlg = ip.showInifiniteBlocking();
-        new AddReclamationForm(res).show();
-        //////////ajouutttt
-        //  ListPostForm a = new ListPostForm(res);
-          //  a.show();
+            InfiniteProgress ip = new InfiniteProgress();
+            final Dialog ipDlg = ip.showInifiniteBlocking();
+            new AddReclamationForm(res).show();
+            //////////ajouutttt
+            //  ListPostForm a = new ListPostForm(res);
+            //  a.show();
             refreshTheme();
         });
 
@@ -145,145 +156,126 @@ public class ListReclamationFormF extends BaseForm{
 
         partage.setSelected(true);
         // special case for rotation
-        
-         ArrayList<Reclamation> reclamations = ServiceReclamation.getInstance().getAllReclamations();
+
+        allReclamations = ServiceReclamation.getInstance().getAllReclamations();
+        filteredReclamations = new ArrayList<>(allReclamations);
 
 // Create container to hold the list of reclamations
-Container reclamationsContainer = new Container();
-reclamationsContainer.setLayout(new BoxLayout(BoxLayout.Y_AXIS));
-this.setScrollableY(true);
+        
+        reclamationsContainer = new Container();
+        reclamationsContainer.setLayout(new BoxLayout(BoxLayout.Y_AXIS));
+        this.setScrollableY(true);
 
 // Add each reclamation to the container with buttons to edit and delete it
-for (Reclamation reclamation : reclamations) {
-    // Create a container to hold the reclamation's information and buttons
-    Container reclamationRow = new Container(new BorderLayout());
-    reclamationRow.setUIID("ReclamationBox");
-
-    // Create labels to display the reclamation's information
-    Label idLabel = new Label("ID: " + reclamation.getId());
-    idLabel.setUIID("ReclamationLabel");
-    Label causeLabel = new Label("Cause: " + reclamation.getCause());
-    causeLabel.setUIID("ReclamationLabel");
-    Label etatLabel = new Label("Etat: " + (reclamation.isEtat()? "Resolved" : "Not Resolved"));
-    etatLabel.setUIID("ReclamationLabel");
-
-Label idUserr = new Label("user receiver: " + reclamation.getIdUserr());
-    idUserr.setUIID("idUserr");
-    
-    Label idUserS = new Label("user sender: " + reclamation.getIdUsers());
-    idUserr.setUIID("idUsers");
-    
-    Label dateLabel = new Label("Date: " + reclamation.getDate().toString());
-    dateLabel.setUIID("ReclamationLabel");
-
-    // Create buttons to edit and delete the reclamation
-    Button editBtn = new Button("Edit");
-    editBtn.addActionListener(e -> {
-      //  new EditReclamationForm(res, reclamation).show();
-    });
-    Button deleteBtn = new Button("Delete");
-    deleteBtn.addActionListener(e -> {
-        // Delete the reclamation from the server
-        ServiceReclamation.getInstance().deleteReclamation(reclamation.getId());
-
-        // Remove the reclamation from the container
-        reclamationsContainer.removeComponent(reclamationRow);
-    });
-
-    // Add the labels to the reclamation row
-    Container labelsContainer = new Container(new GridLayout(4, 1));
-    labelsContainer.add(idLabel);
-    labelsContainer.add(causeLabel);
-    labelsContainer.add(etatLabel);
-    labelsContainer.add(idUserr); 
-   // labelsContainer.add(idUserS); 
-    labelsContainer.add(dateLabel);//idUserS
-
-    reclamationRow.add(BorderLayout.CENTER, labelsContainer);
-
-    // Create a container to hold the buttons
-    Container buttonsContainer = new Container(new GridLayout(2, 1));
-    buttonsContainer.setUIID("ReclamationButtonBox");
-  //  buttonsContainer.add(editBtn);
-    buttonsContainer.add(deleteBtn);
-
-    reclamationRow.add(BorderLayout.EAST, buttonsContainer);
-
-    // Add the reclamation row to the container
+        for (Reclamation reclamation : filteredReclamations) {
+    Container reclamationRow = createReclamationContainer(reclamation);
     reclamationsContainer.add(reclamationRow);
 }
 
 // Add the container to the form
-add(reclamationsContainer);
-        
-        
-        
+        add(reclamationsContainer);
+
     }
-    
-    
-    
-    
-    
-    
-    
-    
-       private void addTab(Tabs swipe, Label spacer , Image image, String string, String text, Resources res) {
+
+    private void filterReclamations(String searchQuery) {
+        reclamationsContainer.removeAll();
+        filteredReclamations.clear();
+
+        if (searchQuery.isEmpty()) {
+            filteredReclamations.addAll(allReclamations);
+        } else {
+            // Filter reclamations based on the search query
+            for (Reclamation reclamation : allReclamations) {
+                if (reclamationMatchesQuery(reclamation, searchQuery)) {
+                    filteredReclamations.add(reclamation);
+                }
+            }
+        }
+        for (Reclamation user : filteredReclamations) {
+            Container reclamationRow = createReclamationContainer(user);
+            reclamationsContainer.add(reclamationRow);
+        }
+
+        revalidate();
+        repaint();
+    }
+
+    private Container createReclamationContainer(Reclamation reclamation) {
+        Container reclamationRow = new Container(new BorderLayout());
+        reclamationRow.setUIID("ReclamationBox");
+
+        // Create labels to display the reclamation's information
+        Label idLabel = new Label("ID: " + reclamation.getId());
+        idLabel.setUIID("ReclamationLabel");
+        Label causeLabel = new Label("Cause: " + reclamation.getCause());
+        causeLabel.setUIID("ReclamationLabel");
+        // Add more labels for other reclamation information
+
+        // Create a container to hold the labels
+        Container labelsContainer = new Container(new BoxLayout(BoxLayout.Y_AXIS));
+        labelsContainer.add(idLabel);
+        labelsContainer.add(causeLabel);
+        // Add more labels to the container
+
+        // Add the labels container to the reclamation row
+        reclamationRow.add(BorderLayout.CENTER, labelsContainer);
+
+        return reclamationRow;
+    }
+
+    private boolean reclamationMatchesQuery(Reclamation reclamation, String searchQuery) {
+        String lowercaseCause = reclamation.getCause().toLowerCase();
+        // Add more attributes to compare if necessary
+
+        return lowercaseCause.contains(searchQuery);
+    }
+
+    private void addTab(Tabs swipe, Label spacer, Image image, String string, String text, Resources res) {
         int size = Math.min(Display.getInstance().getDisplayWidth(), Display.getInstance().getDisplayHeight());
-        
-        if(image.getHeight() < size) {
+
+        if (image.getHeight() < size) {
             image = image.scaledHeight(size);
         }
-        
-        
-        
-        if(image.getHeight() > Display.getInstance().getDisplayHeight() / 2 ) {
+
+        if (image.getHeight() > Display.getInstance().getDisplayHeight() / 2) {
             image = image.scaledHeight(Display.getInstance().getDisplayHeight() / 2);
         }
-        
+
         ScaleImageLabel imageScale = new ScaleImageLabel(image);
         imageScale.setUIID("Container");
         imageScale.setBackgroundType(Style.BACKGROUND_IMAGE_SCALED_FILL);
-        
-        Label overLay = new Label("","ImageOverlay");
-        
-        
-        Container page1 = 
-                LayeredLayout.encloseIn(
-                imageScale,
+
+        Label overLay = new Label("", "ImageOverlay");
+
+        Container page1
+                = LayeredLayout.encloseIn(
+                        imageScale,
                         overLay,
                         BorderLayout.south(
-                        BoxLayout.encloseY(
-                        new SpanLabel(text, "LargeWhiteText"),
+                                BoxLayout.encloseY(
+                                        new SpanLabel(text, "LargeWhiteText"),
                                         spacer
+                                )
                         )
-                    )
                 );
-        
-        swipe.addTab("",res.getImage("back-logo.jpeg"), page1);
-        
-        
-        
-        
+
+        swipe.addTab("", res.getImage("back-logo.jpeg"), page1);
+
     }
-    
-    
-    
-    public void bindButtonSelection(Button btn , Label l ) {
-        
-        btn.addActionListener(e-> {
-        if(btn.isSelected()) {
-            updateArrowPosition(btn,l);
-        }
-    });
+
+    public void bindButtonSelection(Button btn, Label l) {
+
+        btn.addActionListener(e -> {
+            if (btn.isSelected()) {
+                updateArrowPosition(btn, l);
+            }
+        });
     }
 
     private void updateArrowPosition(Button btn, Label l) {
-        
-        l.getUnselectedStyle().setMargin(LEFT, btn.getX() + btn.getWidth()  / 2  - l.getWidth() / 2 );
+
+        l.getUnselectedStyle().setMargin(LEFT, btn.getX() + btn.getWidth() / 2 - l.getWidth() / 2);
         l.getParent().repaint();
     }
 
-    
-   
-   
 }

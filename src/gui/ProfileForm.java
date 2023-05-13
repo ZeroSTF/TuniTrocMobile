@@ -47,7 +47,7 @@ import services.ServiceUser;
 public class ProfileForm extends BaseForm {
 
     public ProfileForm(Resources res) {
-        super("Newsfeed", BoxLayout.y());
+        super("Profile", BoxLayout.y());
         Toolbar tb = new Toolbar(true);
         setToolbar(tb);
         getTitleArea().setUIID("Container");
