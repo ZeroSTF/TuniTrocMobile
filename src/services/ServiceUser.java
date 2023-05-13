@@ -21,6 +21,7 @@ import java.util.Map;
 import com.codename1.ui.Dialog;
 import com.codename1.ui.events.ActionListener;
 import com.codename1.util.regex.StringReader;
+import com.sun.mail.smtp.SMTPTransport;
 import entities.User;
 import gui.NewsfeedForm;
 import gui.SignInForm;
@@ -28,6 +29,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Date;
 import utils.Statics;
+import javax.mail.*;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
+//import java.util.Properties;
 
 /**
  *
@@ -70,6 +75,7 @@ public class ServiceUser {
         req.addArgument("ville", villeValue);
         req.addArgument("pwd", passwordValue);
         req.addArgument("photo", filePath);
+        //sendSignUpEmail(emailValue);
 
         // Set response listener
         req.addResponseListener(e -> {
@@ -368,5 +374,43 @@ public class ServiceUser {
         NetworkManager.getInstance().addToQueueAndWait(req);
         return resultOk;
     }
+    
+//    public void sendSignUpEmail(String recipientEmail) {
+//    // Set up the properties for the mail server
+//    Properties props = System.getProperties();
+//    props.put("mail.transport.protocol", "smtp"); //SMTP protocol
+//		props.put("mail.smtps.host", "smtp.gmail.com"); //SMTP Host
+//		props.put("mail.smtps.auth", "true"); //enable authentication
+//
+//    // Create a session with the properties
+//    Session session = Session.getInstance(props,null);
+//
+//    try {
+//        // Create a new message
+//        MimeMessage message = new MimeMessage(session);
+//
+//        // Set the sender and recipient addresses
+//        message.setFrom(new InternetAddress("TuniTrocPI@gmail.com"));
+//        message.addRecipient(Message.RecipientType.TO, new InternetAddress(recipientEmail));
+//
+//        // Set the subject and content of the email
+//        message.setSubject("Bienvenue sur TuniTroc!");
+//        message.setText("Cher User,\nMerci pour utiliser TuniTroc Mobile.");
+//
+//        // Send the message
+//        Transport.send(message);
+//        System.out.println("Email sent successfully.");
+//        SMTPTransport  st = (SMTPTransport)session.getTransport("smtps") ;
+//            
+//          st.connect("smtp.gmail.com",465,"tunitrocPI@esprit.tn","vkmyijlkpotokvjt");
+//           
+//          st.sendMessage(message, message.getAllRecipients());
+//            
+//          System.out.println("server response : "+st.getLastServerResponse());
+//    } catch (MessagingException mex) {
+//        mex.printStackTrace();
+//    }
+//}
+
 
 }
