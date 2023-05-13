@@ -96,7 +96,7 @@ public class ServiceProduct {
     req.addResponseListener(new ActionListener<NetworkEvent>() {
         @Override
         public void actionPerformed(NetworkEvent evt) {
-            resultOK = req.getResponseCode() == 200;
+            resultOK = (req.getResponseCode() == 200 || req.getResponseCode()==201);
             req.removeResponseListener(this);
             if (resultOK) {
                 Dialog.show("Success", "Produit ajouté avec succès", "OK", null);

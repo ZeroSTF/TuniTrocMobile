@@ -111,13 +111,12 @@ public class ListReclamationFormF extends BaseForm{
 
         
         ButtonGroup barGroup = new ButtonGroup();
-        RadioButton mesListes = RadioButton.createToggle("Reclamer", barGroup);
+        RadioButton mesListes = RadioButton.createToggle("Ajouter", barGroup);
         mesListes.setUIID("SelectBar");
         RadioButton liste = RadioButton.createToggle("...", barGroup);
         liste.setUIID("SelectBar");
         RadioButton partage = RadioButton.createToggle("Reclamations", barGroup);
         partage.setUIID("SelectBar");
-        Label arrow = new Label(res.getImage("news-tab-down-arrow.png"), "Container");
 
 
      //   mesListes.addActionListener((e) -> {
@@ -141,30 +140,18 @@ public class ListReclamationFormF extends BaseForm{
         });
 
         add(LayeredLayout.encloseIn(
-                GridLayout.encloseIn(3, mesListes, liste, partage),
-                FlowLayout.encloseBottom(arrow)
+                GridLayout.encloseIn(3, mesListes, liste, partage)
         ));
 
         partage.setSelected(true);
-        arrow.setVisible(false);
-        addShowListener(e -> {
-            arrow.setVisible(true);
-            updateArrowPosition(partage, arrow);
-        });
-        bindButtonSelection(mesListes, arrow);
-        bindButtonSelection(liste, arrow);
-        bindButtonSelection(partage, arrow);
         // special case for rotation
-        addOrientationListener(e -> {
-            updateArrowPosition(barGroup.getRadioButton(barGroup.getSelectedIndex()), arrow);
-        });
         
          ArrayList<Reclamation> reclamations = ServiceReclamation.getInstance().getAllReclamations();
 
 // Create container to hold the list of reclamations
 Container reclamationsContainer = new Container();
 reclamationsContainer.setLayout(new BoxLayout(BoxLayout.Y_AXIS));
-reclamationsContainer.setScrollableY(true);
+this.setScrollableY(true);
 
 // Add each reclamation to the container with buttons to edit and delete it
 for (Reclamation reclamation : reclamations) {

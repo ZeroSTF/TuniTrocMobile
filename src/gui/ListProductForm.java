@@ -110,7 +110,6 @@ public class ListProductForm extends BaseForm{
         liste.setUIID("SelectBar");
         RadioButton partage = RadioButton.createToggle("Produits", barGroup);
         partage.setUIID("SelectBar");
-        Label arrow = new Label(res.getImage("news-tab-down-arrow.png"), "Container");
 
 
 
@@ -125,23 +124,10 @@ public class ListProductForm extends BaseForm{
         });
 
         add(LayeredLayout.encloseIn(
-                GridLayout.encloseIn(3, mesListes, liste, partage),
-                FlowLayout.encloseBottom(arrow)
+                GridLayout.encloseIn(3, mesListes, liste, partage)
         ));
 
         partage.setSelected(true);
-        arrow.setVisible(false);
-        addShowListener(e -> {
-            arrow.setVisible(true);
-            updateArrowPosition(partage, arrow);
-        });
-        bindButtonSelection(mesListes, arrow);
-        bindButtonSelection(liste, arrow);
-        bindButtonSelection(partage, arrow);
-        // special case for rotation
-        addOrientationListener(e -> {
-            updateArrowPosition(barGroup.getRadioButton(barGroup.getSelectedIndex()), arrow);
-        });
 
 
         
@@ -150,7 +136,7 @@ ArrayList<Product> products = ServiceProduct.getInstance().getAllProducts();
 // Create container to hold the list of products
 Container productsContainer = new Container();
 productsContainer.setLayout(new BoxLayout(BoxLayout.Y_AXIS));
-productsContainer.setScrollableY(true);
+this.setScrollableY(true);
 
 // Add each product to the container with buttons to edit and delete it
 for (Product product : products) {

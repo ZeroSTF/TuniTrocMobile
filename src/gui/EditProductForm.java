@@ -174,7 +174,7 @@ public class EditProductForm extends BaseForm{
                     Dialog.show("Error", "Please enter valid values for all fields", "OK", null);
                     return;
                 }
-
+                System.out.println("TEEEEEEEEEEEEEEEEEEEEEEEEEEST"+product.getId());
                 product.setType(type);
                 product.setCategorie(categorie);
                 product.setNom(nom);
