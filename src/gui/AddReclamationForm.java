@@ -120,7 +120,6 @@ public class AddReclamationForm extends BaseForm{
         liste.setUIID("SelectBar");
         RadioButton partage = RadioButton.createToggle("Reclamations", barGroup);
         partage.setUIID("SelectBar");
-        Label arrow = new Label(res.getImage("news-tab-down-arrow.png"), "Container");
 
 
         partage.addActionListener((e) -> {
@@ -134,33 +133,20 @@ public class AddReclamationForm extends BaseForm{
         });
 
         add(LayeredLayout.encloseIn(
-                GridLayout.encloseIn(3, mesListes, liste, partage),
-                FlowLayout.encloseBottom(arrow)
+                GridLayout.encloseIn(3, mesListes, liste, partage)
         ));
 
         partage.setSelected(true);
-        arrow.setVisible(false);
-        addShowListener(e -> {
-            arrow.setVisible(true);
-            updateArrowPosition(mesListes, arrow);
-        });
-        bindButtonSelection(mesListes, arrow);
-        bindButtonSelection(liste, arrow);
-        bindButtonSelection(partage, arrow);
-        // special case for rotation
-        addOrientationListener(e -> {
-            updateArrowPosition(barGroup.getRadioButton(barGroup.getSelectedIndex()), arrow);
-        });
+        
         
         TextField causeField = new TextField("", "Cause");
 Style textFieldStyle = new Style();
 textFieldStyle.setFgColor(0x000000);
 causeField.setUnselectedStyle(textFieldStyle);
 
-TextField idUserrField = new TextField("", "User ID");
+TextField idUserrField = new TextField("", "From");
 TextField idUsersField = new TextField("", "Assigned To");
 
-ComboBox<String> priorityComboBox = new ComboBox<>("Low", "Medium", "High");
 
 Button addBtn = new Button("Add");
 addBtn.addActionListener(e -> {
@@ -168,9 +154,9 @@ addBtn.addActionListener(e -> {
         String cause = causeField.getText().trim();
         int idUserr = Integer.parseInt(idUserrField.getText());
         int idUsers = Integer.parseInt(idUsersField.getText());
-        String priority = priorityComboBox.getSelectedItem();
+        
 
-        if (cause.isEmpty() || idUserr < 0 || idUsers < 0 || priority.isEmpty()) {
+        if (cause.isEmpty() || idUserr < 0 || idUsers < 0 ) {
             Dialog.show("Error", "Please enter valid values for all fields", "OK", null);
             return;
         }
@@ -179,20 +165,16 @@ addBtn.addActionListener(e -> {
         reclamation.setCause(cause);
         reclamation.setIdUserr(idUserr);
         reclamation.setIdUsers(idUsers);
-       // reclamation.setPriority(priority);
-
         ServiceReclamation.getInstance().addReclamation(reclamation);
         new ListReclamationFormF(res).show();
     } catch (NumberFormatException ex) {
-        Dialog.show("Error", "Please enter valid integer values for User ID and Assigned To", "OK", null);
+        Dialog.show("Error", "Please enter valid integer values for \"FROM\" and Assigned To", "OK", null);
     }
 });
 
 add(causeField);
 add(idUserrField);
 add(idUsersField);
-add(new Label("Priority"));
-add(priorityComboBox);
 add(addBtn);
 
         

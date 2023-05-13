@@ -16,7 +16,6 @@
  * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE 
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
  */
-
 package gui;
 
 import com.codename1.components.ScaleImageLabel;
@@ -50,14 +49,13 @@ public class BaseForm extends Form {
     public BaseForm(String title, Layout contentPaneLayout) {
         super(title, contentPaneLayout);
     }
-    
-    
+
     public Component createLineSeparator() {
         Label separator = new Label("", "WhiteSeparator");
         separator.setShowEvenIfBlank(true);
         return separator;
     }
-    
+
     public Component createLineSeparator(int color) {
         Label separator = new Label("", "WhiteSeparator");
         separator.getUnselectedStyle().setBgColor(color);
@@ -69,28 +67,36 @@ public class BaseForm extends Form {
     protected void addSideMenu(Resources res) {
         Toolbar tb = getToolbar();
         Image img = res.getImage("profile-background.jpg");
-        if(img.getHeight() > Display.getInstance().getDisplayHeight() / 3) {
+        if (img.getHeight() > Display.getInstance().getDisplayHeight() / 3) {
             img = img.scaledHeight(Display.getInstance().getDisplayHeight() / 3);
         }
         ScaleImageLabel sl = new ScaleImageLabel(img);
         sl.setUIID("BottomPad");
         sl.setBackgroundType(Style.BACKGROUND_IMAGE_SCALED_FILL);
-        
+
         tb.addComponentToSideMenu(LayeredLayout.encloseIn(
                 sl,
                 FlowLayout.encloseCenterBottom(
                         new Label(res.getImage("profile-pic.jpg"), "PictureWhiteBackgrond"))
         ));
+
+        tb.addMaterialCommandToSideMenu("Newsfeed", FontImage.MATERIAL_DYNAMIC_FEED, e -> new NewsfeedForm(res).show());
+        tb.addMaterialCommandToSideMenu("Profile", FontImage.MATERIAL_PERSON, e -> new ProfileForm(res).show());
         
-        tb.addMaterialCommandToSideMenu("Newsfeed", FontImage.MATERIAL_UPDATE, e -> new NewsfeedForm(res).show());
-        tb.addMaterialCommandToSideMenu("Profile", FontImage.MATERIAL_SETTINGS, e -> new ProfileForm(res).show());
-        if(SessionManager.isIsAdmin()){
-        tb.addMaterialCommandToSideMenu("Utilisateurs", FontImage.MATERIAL_MY_LIBRARY_BOOKS, e -> new ListUserForm(res).show());
-        tb.addMaterialCommandToSideMenu("Publications", FontImage.MATERIAL_MY_LIBRARY_BOOKS, e -> new ListPostForm(res).show());
-        tb.addMaterialCommandToSideMenu("Produits", FontImage.MATERIAL_MY_LIBRARY_BOOKS, e -> new ListProductForm(res).show());
-        tb.addMaterialCommandToSideMenu("Transporteur", FontImage.MATERIAL_MY_LIBRARY_BOOKS, e -> new ListTransporteurForm(res).show());
-        tb.addMaterialCommandToSideMenu("Reclamations", FontImage.MATERIAL_MY_LIBRARY_BOOKS, e -> new ListReclamationFormF(res).show());
+
+        if (SessionManager.isIsAdmin()) {
+            tb.addMaterialCommandToSideMenu("Utilisateurs", FontImage.MATERIAL_PEOPLE, e -> new ListUserForm(res).show());
+            tb.addMaterialCommandToSideMenu("Publications", FontImage.MATERIAL_DESCRIPTION, e -> new ListPostForm(res).show());
+            tb.addMaterialCommandToSideMenu("Produits", FontImage.MATERIAL_SHOPPING_CART, e -> new ListProductForm(res).show());
+            tb.addMaterialCommandToSideMenu("Transporteurs", FontImage.MATERIAL_LOCAL_SHIPPING, e -> new ListTransporteurForm(res).show());
+            tb.addMaterialCommandToSideMenu("Réclamations", FontImage.MATERIAL_REPORT_PROBLEM, e -> new ListReclamationFormF(res).show());
+            tb.addMaterialCommandToSideMenu("Inscriptions par mois", FontImage.MATERIAL_PIE_CHART, e -> {new UserStatsForm(res).show();;});
+        } else {
+            tb.addMaterialCommandToSideMenu("Carte des clients", FontImage.MATERIAL_MAP, e -> new MapForm());
+            tb.addMaterialCommandToSideMenu("Mes Réclamations", FontImage.MATERIAL_REPORT_PROBLEM, e -> new ListReclamationFormF(res).show());
         }
-        tb.addMaterialCommandToSideMenu("Logout", FontImage.MATERIAL_EXIT_TO_APP, e -> new SignInForm(res).show());
+
+        
+
     }
 }

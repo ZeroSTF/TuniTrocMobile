@@ -101,7 +101,7 @@ public class ServiceReclamation {
     req.addResponseListener(new ActionListener<NetworkEvent>() {
         @Override
         public void actionPerformed(NetworkEvent evt) {
-            resultOK = req.getResponseCode() == 200;
+            resultOK = (req.getResponseCode() == 200|| req.getResponseCode()==201);
             req.removeResponseListener(this);
             if (resultOK) {
                 Dialog.show("Success", "Réclamation ajoutée avec succès", "OK", null);
@@ -124,7 +124,7 @@ public class ServiceReclamation {
     req.addResponseListener(new ActionListener<NetworkEvent>() {
         @Override
         public void actionPerformed(NetworkEvent evt) {
-            resultOK = req.getResponseCode() == 200;
+            resultOK = (req.getResponseCode() == 200||req.getResponseCode() == 201||req.getResponseCode() == 203);
             req.removeResponseListener(this); 
         }
     });
