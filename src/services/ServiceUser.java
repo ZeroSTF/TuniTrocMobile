@@ -116,7 +116,7 @@ public class ServiceUser {
                 //Session 
                 float id = Float.parseFloat(user.get("id").toString());
                 SessionManager.setId((int) id);
-
+                System.out.println("TESTTTTTTTTTTTT" + (int) id);
                 SessionManager.setPassowrd(user.get("pwd").toString());
                 SessionManager.setUserName(user.get("prenom").toString() + " " + user.get("nom").toString());
                 SessionManager.setEmail(user.get("email").toString());
@@ -124,10 +124,9 @@ public class ServiceUser {
                 System.out.println(SessionManager.isIsAdmin());
                 SessionManager.setVille(user.get("ville").toString());
                 SessionManager.setNumTel(user.get("numTel").toString());
-                
+
                 float valeurFidelite = Float.parseFloat(user.get("valeurFidelite").toString());
-                SessionManager.setId((int) valeurFidelite);
-                
+                SessionManager.setValeurFidelite((int) valeurFidelite);
 
                 new NewsfeedForm(rs).show();
 
@@ -323,20 +322,34 @@ public class ServiceUser {
     public boolean deleteUser(int id) {
         String url = Statics.BASE_URL + "/json/suppUser?id=" + id;
 
+        // Create a new ConnectionRequest instance
+        ConnectionRequest req = new ConnectionRequest();
+
+        // Set the request URL
         req.setUrl(url);
 
+        // Declare a boolean variable to track the result of the request
+        resultOk = false;
+
+        // Add a response listener to handle the server's response
         req.addResponseListener(new ActionListener<NetworkEvent>() {
             @Override
             public void actionPerformed(NetworkEvent evt) {
-
-                req.removeResponseCodeListener(this);
+                int status = req.getResponseCode();
+                if (status == 200) {
+                    resultOk = true; // Set resultOk to true for a successful response
+                }
+                req.removeResponseListener(this);
             }
         });
 
+        // Add the request to the NetworkManager's queue and wait for its completion
         NetworkManager.getInstance().addToQueueAndWait(req);
+
+        // Return the result of the request
         return resultOk;
     }
-    
+
     public boolean editUser(User user) {
         String url = Statics.BASE_URL + "/json/modifUser?id=" + user.getId();
         ConnectionRequest req = new ConnectionRequest(url);

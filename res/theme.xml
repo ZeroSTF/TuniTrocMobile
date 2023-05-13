@@ -68,19 +68,11 @@
         <val key="Button.sel#padding" value="2.0,2.0,2.0,2.0" />
         <val key="CenterLabel.align" value="4" />
         <val key="CenterLabel.derive" value="Label" />
-        <val key="CenterLink.align" value="4" />
-        <val key="CenterLink.fgColor" value="ffffff" />
         <font key="CenterLink.font" type="ttf" face="0" style="0" size="0" name="native:MainLight" family="native:MainLight" sizeSettings="3" actualSize="2.5" />
-        <val key="CenterLink.padUnit" value="2,2,2,2" />
-        <val key="CenterLink.padding" value="2.0,2.0,1.0,1.0" />
-        <val key="CenterLink.transparency" value="0" />
         <val key="DatePickerDay.align" value="4" />
         <val key="DatePickerDay.fgColor" value="ffffff" />
         <font key="DatePickerDay.font" type="ttf" face="0" style="0" size="0" name="native:MainThin" family="native:MainThin" sizeSettings="3" actualSize="4.5" />
-        <val key="DatePickerDay.sel#align" value="4" />
-        <val key="DatePickerDay.sel#fgColor" value="777777" />
         <font key="DatePickerDay.sel#font" type="ttf" face="0" style="0" size="0" name="native:MainThin" family="native:MainThin" sizeSettings="3" actualSize="4.5" />
-        <val key="DatePickerDay.sel#transparency" value="0" />
         <val key="DatePickerDay.transparency" value="0" />
         <val key="DatePickerEvent.align" value="4" />
         <val key="DatePickerEvent.fgColor" value="cccccc" />
@@ -93,10 +85,6 @@
         <val key="DatePickerMonth.align" value="4" />
         <val key="DatePickerMonth.fgColor" value="ffffff" />
         <font key="DatePickerMonth.font" type="ttf" face="0" style="0" size="0" name="native:MainLight" family="native:MainLight" sizeSettings="3" actualSize="2.5" />
-        <val key="DatePickerMonth.sel#align" value="4" />
-        <val key="DatePickerMonth.sel#fgColor" value="777777" />
-        <font key="DatePickerMonth.sel#font" type="ttf" face="0" style="0" size="0" name="native:MainLight" family="native:MainLight" sizeSettings="3" actualSize="2.5" />
-        <val key="DatePickerMonth.sel#transparency" value="0" />
         <val key="DatePickerMonth.transparency" value="0" />
         <val key="FloatingHint.align" value="4" />
         <val key="FloatingHint.fgColor" value="a2a1b8" />
@@ -108,20 +96,16 @@
         <val key="Form.transparency" value="255" />
         <val key="ImageOverlay.bgColor" value="14134b" />
         <val key="ImageOverlay.transparency" value="60" />
-        <val key="Label.fgColor" value="a2a1b8" />
+        <val key="Label.fgColor" value="0" />
         <font key="Label.font" type="ttf" face="0" style="0" size="0" name="native:MainLight" family="native:MainLight" sizeSettings="3" actualSize="2.5" />
         <val key="Label.transparency" value="0" />
         <val key="LargeWhiteText.align" value="1" />
-        <val key="LargeWhiteText.fgColor" value="ffffff" />
         <font key="LargeWhiteText.font" type="ttf" face="0" style="0" size="0" name="native:MainLight" family="native:MainLight" sizeSettings="3" actualSize="3.5" />
         <val key="Link.fgColor" value="ffffff" />
         <font key="Link.font" type="ttf" face="0" style="0" size="0" name="native:MainLight" family="native:MainLight" sizeSettings="3" actualSize="2.5" />
         <val key="Link.press#fgColor" value="ffffff" />
         <font key="Link.press#font" type="ttf" face="0" style="0" size="0" name="native:MainLight" family="native:MainLight" sizeSettings="3" actualSize="2.5" />
         <val key="Link.press#transparency" value="0" />
-        <val key="Link.sel#fgColor" value="ffffff" />
-        <font key="Link.sel#font" type="ttf" face="0" style="0" size="0" name="native:MainLight" family="native:MainLight" sizeSettings="3" actualSize="2.5" />
-        <val key="Link.sel#transparency" value="0" />
         <val key="Link.transparency" value="0" />
         <val key="LogoLabel.align" value="4" />
         <val key="LogoLabel.fgColor" value="ffffff" />
@@ -138,20 +122,12 @@
         <val key="MenuButton.press#padUnit" value="2,2,2,2" />
         <val key="MenuButton.press#padding" value="2.0,2.0,2.0,2.0" />
         <val key="MenuButton.press#transparency" value="0" />
-        <val key="MenuButton.sel#fgColor" value="ffffff" />
-        <font key="MenuButton.sel#font" type="ttf" face="0" style="0" size="0" name="native:MainLight" family="native:MainLight" sizeSettings="3" actualSize="3.0" />
-        <val key="MenuButton.sel#padUnit" value="2,2,2,2" />
-        <val key="MenuButton.sel#padding" value="2.0,2.0,2.0,2.0" />
-        <val key="MenuButton.sel#transparency" value="0" />
         <val key="MenuButton.transparency" value="0" />
         <val key="NewsBottomLine.fgColor" value="a2a1b8" />
         <font key="NewsBottomLine.font" type="ttf" face="0" style="0" size="0" name="native:MainLight" family="native:MainLight" sizeSettings="3" actualSize="1.5" />
         <val key="NewsBottomLine.press#fgColor" value="a2a1b8" />
         <font key="NewsBottomLine.press#font" type="ttf" face="0" style="0" size="0" name="native:MainLight" family="native:MainLight" sizeSettings="3" actualSize="1.5" />
         <val key="NewsBottomLine.press#transparency" value="0" />
-        <val key="NewsBottomLine.sel#fgColor" value="a2a1b8" />
-        <font key="NewsBottomLine.sel#font" type="ttf" face="0" style="0" size="0" name="native:MainLight" family="native:MainLight" sizeSettings="3" actualSize="1.5" />
-        <val key="NewsBottomLine.sel#transparency" value="0" />
         <val key="NewsBottomLine.transparency" value="0" />
         <val key="NewsTopLine.fgColor" value="0" />
         <font key="NewsTopLine.font" type="ttf" face="0" style="0" size="0" name="native:MainLight" family="native:MainLight" sizeSettings="3" actualSize="2.0" />
@@ -236,6 +212,12 @@
         <val key="SignIn.padUnit" value="0,0,2,0" />
         <val key="SignIn.padding" value="0.0,3.0,0.0,0.0" />
         <val key="SignIn.transparency" value="255" />
+        <val key="SignUp.bgImage" value="profile-background.jpg" />
+        <val key="SignUp.bgType" value="33" />
+        <val key="SignUp.margin" value="0.0,0.0,0.0,0.0" />
+        <val key="SignUp.padUnit" value="0,0,2,0" />
+        <val key="SignUp.padding" value="0.0,3.0,0.0,0.0" />
+        <val key="SignUp.transparency" value="255" />
         <val key="SkipButton.fgColor" value="a2a1b8" />
         <font key="SkipButton.font" type="ttf" face="0" style="0" size="0" name="native:MainLight" family="native:MainLight" sizeSettings="3" actualSize="3.5" />
         <val key="SkipButton.margin" value="0.0,0.0,0.0,0.0" />
@@ -256,55 +238,32 @@
         <val key="SkipButton.transparency" value="0" />
         <val key="StatusBarSideMenu.margin" value="0.0,0.0,0.0,0.0" />
         <val key="StatusBarSideMenu.padding" value="0.0,0.0,0.0,0.0" />
-        <val key="TextField.align" value="4" />
-        <border key="TextField.border" type="empty" />
-        <val key="TextField.fgColor" value="ffffff" />
+        <font key="TextField.font" type="system" face="0" style="0" size="0" />
         <val key="TextField.margin" value="0.0,0.0,0.0,0.0" />
         <val key="TextField.padUnit" value="2,2,2,2" />
         <val key="TextField.padding" value="2.0,2.0,2.0,2.0" />
         <val key="TextField.sel#align" value="4" />
         <border key="TextField.sel#border" type="empty" />
         <val key="TextField.sel#fgColor" value="ffffff" />
+        <font key="TextField.sel#font" type="system" face="0" style="0" size="0" />
         <val key="TextField.sel#margin" value="0.0,0.0,0.0,0.0" />
-        <val key="TextField.sel#padUnit" value="2,2,2,2" />
-        <val key="TextField.sel#padding" value="3.0,3.0,2.0,2.0" />
         <val key="TextField.sel#transparency" value="0" />
         <val key="TextField.transparency" value="0" />
         <val key="TextFieldBlack.align" value="3" />
-        <border key="TextFieldBlack.border" type="empty" />
         <val key="TextFieldBlack.fgColor" value="0" />
         <val key="TextFieldBlack.margin" value="0.0,0.0,0.0,0.0" />
         <val key="TextFieldBlack.padUnit" value="2,2,2,2" />
         <val key="TextFieldBlack.padding" value="1.0,1.0,1.0,1.0" />
-        <val key="TextFieldBlack.sel#align" value="3" />
-        <border key="TextFieldBlack.sel#border" type="empty" />
-        <val key="TextFieldBlack.sel#fgColor" value="0" />
-        <val key="TextFieldBlack.sel#margin" value="0.0,0.0,0.0,0.0" />
-        <val key="TextFieldBlack.sel#padUnit" value="2,2,2,2" />
-        <val key="TextFieldBlack.sel#padding" value="1.0,1.0,1.0,1.0" />
-        <val key="TextFieldBlack.sel#transparency" value="0" />
         <val key="TextFieldBlack.transparency" value="0" />
         <val key="TextHint.align" value="4" />
         <val key="TextHint.sel#align" value="4" />
-        <val key="Title.align" value="4" />
-        <val key="Title.fgColor" value="ffffff" />
         <font key="Title.font" type="ttf" face="0" style="0" size="0" name="native:MainLight" family="native:MainLight" sizeSettings="3" actualSize="3.0" />
         <val key="Title.textDecoration" value="0" />
-        <val key="TitleCommand.fgColor" value="ffffff" />
-        <font key="TitleCommand.font" type="ttf" face="0" style="0" size="0" name="native:MainLight" family="native:MainLight" sizeSettings="3" actualSize="3.0" />
-        <val key="TitleCommand.padUnit" value="2,2,2,2" />
-        <val key="TitleCommand.padding" value="2.0,2.0,2.0,2.0" />
         <val key="TitleCommand.press#fgColor" value="ffffff" />
         <font key="TitleCommand.press#font" type="ttf" face="0" style="0" size="0" name="native:MainLight" family="native:MainLight" sizeSettings="3" actualSize="3.0" />
         <val key="TitleCommand.press#padUnit" value="2,2,2,2" />
         <val key="TitleCommand.press#padding" value="2.0,2.0,2.0,2.0" />
         <val key="TitleCommand.press#transparency" value="0" />
-        <val key="TitleCommand.sel#fgColor" value="ffffff" />
-        <font key="TitleCommand.sel#font" type="ttf" face="0" style="0" size="0" name="native:MainLight" family="native:MainLight" sizeSettings="3" actualSize="3.0" />
-        <val key="TitleCommand.sel#padUnit" value="2,2,2,2" />
-        <val key="TitleCommand.sel#padding" value="2.0,2.0,2.0,2.0" />
-        <val key="TitleCommand.sel#transparency" value="0" />
-        <val key="TitleCommand.transparency" value="0" />
         <gradient key="Toolbar.bgGradient" color1="0" color2="0" posX="0.5" posY="0.5" radius="1.0" />
         <val key="Toolbar.bgType" value="0" />
         <border key="Toolbar.border" type="empty" />
@@ -331,7 +290,6 @@
         <val key="WhiteSeparator.margin" value="0.0,0.0,0.0,0.0" />
         <val key="WhiteSeparator.padding" value="1.0,1.0,1.0,1.0" />
         <val key="WhiteSeparator.transparency" value="26" />
-        <val key="transparency" value="0" />
     </theme>
     <image name="timeline-background.jpg"  />
     <image name="tunitroc.png"  />

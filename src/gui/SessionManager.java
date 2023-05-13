@@ -98,7 +98,7 @@ public class SessionManager {
         return pref.get("valeurFidelite",valeurFidelite);
     }
 
-    public static void setNumTel(int valeurFidelite) {
+    public static void setValeurFidelite(int valeurFidelite) {
         pref.set("valeurFidelite",valeurFidelite);
     }
     

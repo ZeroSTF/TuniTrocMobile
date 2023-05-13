@@ -112,6 +112,7 @@ public class ProfileForm extends BaseForm {
         updatedUser.setNumTel(numTel.getText());
 
         // Call the editUser function to update the user
+        System.out.println("siuuuuuuu   "+updatedUser.getId());
         boolean success = ServiceUser.getInstance().editUser(updatedUser);
         if (success) {
             // Show a success message or perform any additional actions

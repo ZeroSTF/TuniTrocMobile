@@ -151,10 +151,11 @@ public class ListUserForm extends BaseForm {
             Button deleteBtn = new Button("Delete");
             deleteBtn.addActionListener(e -> {
                 // Delete the reclamation from the server
+                reclamationContainer.removeComponent(reclamationRow);
                 ServiceUser.getInstance().deleteUser(user.getId());
 
                 // Remove the reclamation from the container
-                reclamationContainer.removeComponent(reclamationRow);
+                
             });
 
             // Add the labels to the reclamation row
@@ -162,8 +163,6 @@ public class ListUserForm extends BaseForm {
             labelsContainer.add(idLabel);
             labelsContainer.add(nomLabel);
             labelsContainer.add(emailLabel);
-            //labelsContainer.add(sujetLabel);
-            //labelsContainer.add(descriptionLabel);
             labelsContainer.add(etatLabel);
             labelsContainer.add(dateLabel);
 
